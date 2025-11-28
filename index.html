@@ -25,9 +25,11 @@
         .control-group select, .control-group button { padding: 12px 15px; border: 2px solid #ddd; border-radius: 6px; font-size: 14px; transition: all 0.3s ease; }
         .control-group button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; font-weight: 600; cursor: pointer; transition: transform 0.2s ease; }
         .control-group button:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3); }
-        #map { width: 100%; height: 600px; background: #e9ecef; }
+        #map { width: 100%; height: 600px; background: #e9ecef; position: relative; }
         .info-panel { background: #f8f9fa; padding: 20px; border-top: 1px solid #e9ecef; font-size: 14px; color: #666; }
-        .legend { background: white; padding: 15px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.2); font-size: 12px; position: absolute; bottom: 50px; right: 20px; z-index: 400; }
+        .legend { background: white; padding: 15px; border-radius: 5px; box-shadow: 0 0 15px rgba(0,0,0,0.2); font-size: 12px; position: absolute; bottom: 50px; right: 20px; z-index: 400; line-height: 1.8; }
+        .legend-item { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .legend-color { width: 20px; height: 20px; border-radius: 50%; border: 1px solid rgba(0,0,0,0.2); }
         .heatmap-tooltip {
     background: #ffffffee;
     border: 1px solid #dcdcdc;
@@ -144,15 +146,13 @@
         let map;
         let circleMarkers = [];
 
-        function getColor(count) {
-    return count > 80 ? '#d73027' :     // dark red
-           count > 60 ? '#fc8d59' :     // orange
-           count > 40 ? '#fee08b' :     // yellow
-           count > 20 ? '#66bd63' :     // medium green
-           count > 10 ? '#1a9850' :     // darker green
-                         '#a6d96a';     // light green
-}
-
+        function getHeatColor(intensity) {
+            return intensity > 0.8 ? '#d73027' :
+                   intensity > 0.6 ? '#fc8d59' :
+                   intensity > 0.4 ? '#fee08b' :
+                   intensity > 0.2 ? '#66bd63' :
+                   '#1a9850';
+        }
 
         function initMap() {
             // default view - if shahdra has a center use it, else use Delhi center
@@ -163,6 +163,27 @@
                 maxZoom: 19,
                 opacity: 0.55 
             }).addTo(map);
+
+            // Add legend
+            const legend = L.control({ position: 'bottomright' });
+            legend.onAdd = function() {
+                const div = L.DomUtil.create('div', 'legend');
+                const intensities = [
+                    { label: 'Low (20%)', color: '#1a9850' },
+                    { label: 'Medium (40%)', color: '#66bd63' },
+                    { label: 'High (60%)', color: '#fee08b' },
+                    { label: 'Very High (80%)', color: '#fc8d59' },
+                    { label: 'Critical (100%)', color: '#d73027' }
+                ];
+                
+                div.innerHTML = '<strong>Patient Density</strong><br>';
+                intensities.forEach(item => {
+                    div.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:${item.color}"></div>${item.label}</div>`;
+                });
+                
+                return div;
+            };
+            legend.addTo(map);
         }
 
         function generateHeatmap() {
@@ -203,6 +224,10 @@
 
             if (patientCount < 1) return;
 
+            // Intensity: normalize to 0-1
+            const intensity = Math.min(patientCount / 100, 1);
+            const color = getHeatColor(intensity);
+            
             // Radius scale
             const radius =
                 patientCount <= 3 ? 14 :
@@ -212,15 +237,13 @@
                 patientCount <= 70 ? 38 :
                 46;
 
-            const color = getColor(patientCount);
-
             const circle = L.circleMarker([area.lat, area.lng], {
                 radius: radius,
                 fillColor: color,
                 color: "#ffffff",
                 weight: 1,
-                fillOpacity: 0.85,
-                opacity: 0.9
+                fillOpacity: 0.4,
+                opacity: 0.4
             }).addTo(map);
 
             // Tooltip
@@ -253,7 +276,7 @@
                 this.setStyle({
                     radius: radius,
                     weight: 1,
-                    fillOpacity: 0.85
+                    fillOpacity: 0.4
                 });
             });
 
