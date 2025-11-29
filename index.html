@@ -6,6 +6,8 @@
     <title>Patient Heatmap Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; padding: 20px; }
@@ -186,7 +188,9 @@
             legend.addTo(map);
         }
 
-        function generateHeatmap() {
+        let heatLayer;   // add at top
+
+function generateHeatmap() {
     try {
         const branch = document.getElementById('branch').value;
         const year = document.getElementById('year').value;
@@ -196,8 +200,7 @@
         // Build month array
         let monthList = [];
         for (let m = startMonth; m <= endMonth; m++) {
-            let mm = m.toString().padStart(2, '0');
-            monthList.push(`${year}-${mm}`);
+            monthList.push(`${year}-${m.toString().padStart(2, '0')}`);
         }
 
         const branchData = patientData[branch];
@@ -208,14 +211,21 @@
 
         let totalPatients = 0;
 
-        // Clear existing markers
+        // Remove previous circle markers
         circleMarkers.forEach(marker => map.removeLayer(marker));
         circleMarkers = [];
+
+        // Remove previous heatmap layer
+        if (heatLayer) {
+            map.removeLayer(heatLayer);
+        }
+
+        // Create heatmap points
+        const heatPoints = [];
 
         branchData.areas.forEach(area => {
             let patientCount = 0;
 
-            // Sum patient counts across range
             monthList.forEach(m => {
                 patientCount += (area.patients[m] || 0);
             });
@@ -224,90 +234,39 @@
 
             if (patientCount < 1) return;
 
-            // Intensity: normalize to 0-1
-            const intensity = Math.min(patientCount / 100, 1);
-            const color = getHeatColor(intensity);
-            
-            // Radius scale
-            const radius =
-                patientCount <= 3 ? 14 :
-                patientCount <= 10 ? 18 :
-                patientCount <= 20 ? 24 :
-                patientCount <= 40 ? 30 :
-                patientCount <= 70 ? 38 :
-                46;
+            // Weight must be 0–1
+            const intensity = Math.min(patientCount / 50, 1);
 
-            const circle = L.circleMarker([area.lat, area.lng], {
-                radius: radius,
-                fillColor: color,
-                color: "#ffffff",
-                weight: 1,
-                fillOpacity: 0.4,
-                opacity: 0.4
-            }).addTo(map);
-
-            // Tooltip
-            circle.bindTooltip(
-                `<div style="font-size:14px;font-weight:600;">
-                    ${area.name}
-                </div>
-                <div style="font-size:12px;">
-                    Patients: <strong>${patientCount}</strong>
-                </div>`,
-                {
-                    permanent: false,
-                    direction: "top",
-                    offset: [0, -radius],
-                    opacity: 0.9,
-                    className: "heatmap-tooltip"
-                }
-            );
-
-            // Hover animation
-            circle.on("mouseover", function () {
-                this.setStyle({
-                    radius: radius * 1.4,
-                    weight: 2,
-                    fillOpacity: 1
-                });
-            });
-
-            circle.on("mouseout", function () {
-                this.setStyle({
-                    radius: radius,
-                    weight: 1,
-                    fillOpacity: 0.4
-                });
-            });
-
-            circleMarkers.push(circle);
+            heatPoints.push([area.lat, area.lng, intensity]);
         });
 
-        // Center map to branch
+        // Add Leaflet Heatmap Layer
+        heatLayer = L.heatLayer(heatPoints, {
+            radius: 35,     // similar to folium radius
+            blur: 20,
+            maxZoom: 11,
+            minOpacity: 0.3,
+            gradient: {
+                0.2: "#1a9850",
+                0.4: "#66bd63",
+                0.6: "#fee08b",
+                0.8: "#fc8d59",
+                1.0: "#d73027"
+            }
+        }).addTo(map);
+
+        // Center map
         if (branchData.center) {
             map.setView(branchData.center, 12);
         }
 
-        // Update info panel
-        const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-
-        const startName = monthNames[startMonth - 1];
-        const endName = monthNames[endMonth - 1];
-
-        const branchName = branch.charAt(0).toUpperCase() + branch.slice(1).replace('-', ' ');
-
-        document.getElementById('selection-info').textContent =
-            `${branchName} • ${startName} → ${endName} ${year}`;
-
         document.getElementById('patient-count').textContent = totalPatients;
 
-        console.log(`Heatmap updated for ${branchName}, ${startName} to ${endName} ${year}`);
-        
     } catch (error) {
-        console.error('Error generating heatmap:', error);
-        alert('Error updating heatmap. See console.');
+        console.error(error);
     }
 }
+
 
 
         window.addEventListener('load', () => {
