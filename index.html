@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Patient Heatmap Dashboard</title>
-    <link 
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
     />
@@ -123,15 +123,6 @@
         border-radius: 50%;
         border: 1px solid rgba(0, 0, 0, 0.2);
       }
-      .heatmap-tooltip {
-        background: #ffffffee;
-        border: 1px solid #dcdcdc;
-        padding: 6px 10px;
-        border-radius: 6px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-        font-family: "Segoe UI", sans-serif;
-        color: #333;
-      }
       .app-footer {
         text-align: center;
         padding: 18px;
@@ -226,20 +217,18 @@
       </div>
     </div>
 
-    <!-- load data files (make sure these exist and set window.data_... variables) -->
+    <!-- external data files should set window.data_shahdra, window.data_keshavpuram, window.data_mayurvihar -->
     <script src="data/shahdra.js"></script>
     <script src="data/keshavpuram.js"></script>
     <script src="data/mayurvihar.js"></script>
 
     <script>
-      // Compose patientData from loaded window variables (these files should set window.data_shahdra etc.)
       const patientData = {
         shahdra: window.data_shahdra,
         keshavpuram: window.data_keshavpuram,
         "mayur-vihar": window.data_mayurvihar,
       };
 
-      // Branch markers data (coordinates extracted from the provided embed URLs)
       const branchMarkers = [
         {
           id: "mayur-vihar",
@@ -274,8 +263,8 @@
       ];
 
       let map;
-      let circleMarkers = [];
-      let branchLeafletMarkers = []; // store branch markers as {id, marker}
+      let circleMarkers = []; // kept for legacy, but we won't add circles now
+      let branchLeafletMarkers = []; // {id, marker}
       let heatLayer;
 
       function getHeatColor(intensity) {
@@ -302,7 +291,7 @@
           opacity: 0.55,
         }).addTo(map);
 
-        // Add legend
+        // legend
         const legend = L.control({ position: "bottomright" });
         legend.onAdd = function () {
           const div = L.DomUtil.create("div", "legend");
@@ -313,7 +302,6 @@
             { label: "Very High (80%)", color: "#fc8d59" },
             { label: "Critical (100%)", color: "#d73027" },
           ];
-
           div.innerHTML = "<strong>Patient Density</strong><br>";
           intensities.forEach((item) => {
             div.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:${item.color}"></div>${item.label}</div>`;
@@ -325,7 +313,6 @@
         addBranchMarkers();
       }
 
-      // Add markers for each branch (call once on init)
       function addBranchMarkers() {
         const icon = L.icon({
           iconUrl:
@@ -340,7 +327,7 @@
           shadowSize: [41, 41],
         });
 
-        // remove existing markers if any (keeps idempotent)
+        // remove existing (idempotent)
         branchLeafletMarkers.forEach((m) => map.removeLayer(m.marker));
         branchLeafletMarkers = [];
 
@@ -356,7 +343,7 @@
         });
       }
 
-      // generateHeatmap now shows only the selected branch marker
+      // generateHeatmap without small circle markers
       function generateHeatmap() {
         try {
           const branch = document.getElementById("branch").value;
@@ -366,7 +353,6 @@
           );
           const endMonth = parseInt(document.getElementById("endMonth").value);
 
-          // update selection info display (branch label + months)
           const branchInfo = branchMarkers.find((b) => b.id === branch);
           const startLabel =
             document.getElementById("startMonth").selectedOptions[0].text;
@@ -376,15 +362,14 @@
             branchInfo ? branchInfo.branchName : branch
           } — ${startLabel} to ${endLabel} ${year}`;
 
-          // Build month array
-          let monthList = [];
-          for (let m = startMonth; m <= endMonth; m++) {
+          // build months
+          const monthList = [];
+          for (let m = startMonth; m <= endMonth; m++)
             monthList.push(`${year}-${m.toString().padStart(2, "0")}`);
-          }
 
           const branchData = patientData[branch];
           if (!branchData || !branchData.areas) {
-            // show selected marker only, hide others
+            // show only selected marker if it exists
             branchLeafletMarkers.forEach((bm) => {
               if (bm.id === branch) map.addLayer(bm.marker);
               else map.removeLayer(bm.marker);
@@ -393,49 +378,31 @@
             return;
           }
 
-          let totalPatients = 0;
+          // remove previous heat
+          if (heatLayer) map.removeLayer(heatLayer);
 
-          // Remove previous circle markers
-          circleMarkers.forEach((marker) => map.removeLayer(marker));
+          // clear any legacy circle markers (we won't add new ones)
+          circleMarkers.forEach((m) => map.removeLayer(m));
           circleMarkers = [];
 
-          // Remove previous heatmap layer
-          if (heatLayer) {
-            map.removeLayer(heatLayer);
-          }
-
-          // Create heatmap points
+          let totalPatients = 0;
           const heatPoints = [];
+
           branchData.areas.forEach((area) => {
             let patientCount = 0;
-            monthList.forEach((m) => {
-              patientCount += area.patients[m] || 0;
-            });
-
+            monthList.forEach((mm) => (patientCount += area.patients[mm] || 0));
             totalPatients += patientCount;
             if (patientCount < 1) return;
-
-            // Weight must be 0–1
             const intensity = Math.min(patientCount / 50, 1);
             heatPoints.push([area.lat, area.lng, intensity]);
-
-            // optionally add a small circle marker for context (transparent)
-            const circle = L.circle([area.lat, area.lng], {
-              radius: 120 + patientCount * 10,
-              color: getHeatColor(intensity),
-              fillColor: getHeatColor(intensity),
-              fillOpacity: 0.12,
-              weight: 1,
-            }).addTo(map);
-            circleMarkers.push(circle);
           });
 
-          // Add Leaflet Heatmap Layer
+          // add heatlayer only
           heatLayer = L.heatLayer(heatPoints, {
             radius: 35,
             blur: 20,
-            maxZoom: 11,
             minOpacity: 0.3,
+            maxZoom: 11,
             gradient: {
               0.2: "#1a9850",
               0.4: "#66bd63",
@@ -445,39 +412,32 @@
             },
           }).addTo(map);
 
-          // Show only the selected branch marker; hide others
+          // show only selected marker
           branchLeafletMarkers.forEach((bm) => {
             if (bm.id === branch) map.addLayer(bm.marker);
             else map.removeLayer(bm.marker);
           });
 
-          // Compute bounds to show selected marker + heat points
+          // fit bounds to selected marker + heat points
           const bounds = L.latLngBounds([]);
-          const selectedBranchMarker = branchLeafletMarkers.find(
+          const selectedMarker = branchLeafletMarkers.find(
             (bm) => bm.id === branch
           );
-          if (selectedBranchMarker)
-            bounds.extend(selectedBranchMarker.marker.getLatLng());
+          if (selectedMarker) bounds.extend(selectedMarker.marker.getLatLng());
           heatPoints.forEach((p) => bounds.extend([p[0], p[1]]));
 
-          if (bounds.isValid()) {
-            map.fitBounds(bounds.pad(0.25));
-            // open popup for selected marker for quick info
-            if (selectedBranchMarker) selectedBranchMarker.marker.openPopup();
-          } else if (branchData.center) {
-            map.setView(branchData.center, 12);
-          }
+          if (bounds.isValid()) map.fitBounds(bounds.pad(0.25));
+          else if (branchData.center) map.setView(branchData.center, 12);
 
           document.getElementById("patient-count").textContent = totalPatients;
-        } catch (error) {
-          console.error(error);
+        } catch (err) {
+          console.error(err);
         }
       }
 
       window.addEventListener("load", () => {
         initMap();
-        // default selection: run once
-        generateHeatmap();
+        generateHeatmap(); // initial render
       });
     </script>
 
