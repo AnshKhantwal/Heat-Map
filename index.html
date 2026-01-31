@@ -329,6 +329,7 @@ let coordinates = {};
 let generatedCoordinates = { shahdra: {}, keshavpuram: {}, mayurvihar: {}, tigri: {}, uttamnagar: {} };
 let map, heatLayer;
 let branchLeafletMarkers = [];
+let zoomHandler = null; // Track zoom event handler
 
 /* ================================
    LOAD COORDINATES
@@ -658,6 +659,7 @@ async function generateHeatmap() {
     
     const monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
     const heatPoints = [];
+    const locationCount = {}; // Track frequency per location
     let totalPatients = 0;
 
     for (let m = start; m <= end; m++) {
@@ -683,10 +685,21 @@ async function generateHeatmap() {
         }
 
         if (entry) {
-          heatPoints.push([entry.lat, entry.lng, 0.3]);
+          // Track frequency per location for intensity
+          const locKey = `${entry.lat.toFixed(5)},${entry.lng.toFixed(5)}`;
+          locationCount[locKey] = (locationCount[locKey] || 0) + 1;
           totalPatients++;
         }
       }
+    }
+
+    // Convert location counts to heat points with intensity based on frequency
+    const maxCount = Math.max(...Object.values(locationCount), 1);
+    for (const [locKey, count] of Object.entries(locationCount)) {
+      const [lat, lng] = locKey.split(",").map(Number);
+      // Intensity scaled by frequency (0.3 to 1.0 range)
+      const intensity = 0.3 + (count / maxCount) * 0.7;
+      heatPoints.push([lat, lng, intensity]);
     }
 
     const branchInfo = branchMarkers.find(b => b.id === branch);
@@ -697,20 +710,58 @@ async function generateHeatmap() {
       `${branchInfo.branchName} — ${startLabel} to ${endLabel} ${year}`;
 
     if (heatLayer) map.removeLayer(heatLayer);
+    
+    // Remove previous zoom handler to avoid duplicates
+    if (zoomHandler) {
+      map.off('zoomend', zoomHandler);
+      zoomHandler = null;
+    }
 
     if (heatPoints.length > 0) {
+      // Dynamic radius based on zoom level for precision
+      const getRadiusForZoom = (zoom) => {
+        if (zoom >= 16) return 15;
+        if (zoom >= 14) return 20;
+        if (zoom >= 12) return 25;
+        if (zoom >= 10) return 30;
+        return 35;
+      };
+
+      const getBlurForZoom = (zoom) => {
+        if (zoom >= 16) return 10;
+        if (zoom >= 14) return 12;
+        if (zoom >= 12) return 15;
+        return 18;
+      };
+
+      const currentZoom = map.getZoom();
+      
       heatLayer = L.heatLayer(heatPoints, {
-        radius: 35,
-        blur: 20,
-        minOpacity: 0.3,
+        radius: getRadiusForZoom(currentZoom),
+        blur: getBlurForZoom(currentZoom),
+        maxZoom: 17,
+        max: 1.0,
+        minOpacity: 0.4,
         gradient: {
-          0.2: "#1a9850",
-          0.4: "#66bd63",
-          0.6: "#fee08b",
-          0.8: "#fc8d59",
+          0.0: "#1a9850",
+          0.25: "#66bd63",
+          0.5: "#fee08b",
+          0.75: "#fc8d59",
           1.0: "#d73027"
         }
       }).addTo(map);
+
+      // Update heatmap radius/blur on zoom change for precision
+      zoomHandler = function() {
+        if (heatLayer) {
+          const zoom = map.getZoom();
+          heatLayer.setOptions({
+            radius: getRadiusForZoom(zoom),
+            blur: getBlurForZoom(zoom)
+          });
+        }
+      };
+      map.on('zoomend', zoomHandler);
 
       const bounds = L.latLngBounds([]);
       heatPoints.forEach(p => bounds.extend([p[0], p[1]]));
