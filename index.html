@@ -189,6 +189,8 @@
                     <option value="shahdra">Shahdra</option>
                     <option value="keshavpuram">Keshavpuram</option>
                     <option value="mayurvihar">Mayur Vihar</option>
+                    <option value="tigri">Tigri</option>
+                    <option value="uttamnagar">Uttam Nagar</option>
                 </select>
             </div>
 
@@ -268,12 +270,16 @@ const sheetGIDs = {
   2025: {
     shahdra: "0",
     keshavpuram: "68749806",
-    mayurvihar: "1783876413"
+    mayurvihar: "1783876413",
+    tigri: "389517366",
+    uttamnagar: "1397431706"
   },
   2026: {
     shahdra: "974309338",
     keshavpuram: "1480543339",
-    mayurvihar: "441975283"
+    mayurvihar: "441975283",
+    tigri: "2117592559",
+    uttamnagar: "1079630349"
   }
 };
 
@@ -298,6 +304,20 @@ const branchMarkers = [
     addressLine: "C-8/139, Lawrence Road Gate No 3, Keshavpuram, Delhi -35",
     lat: 28.690205,
     lng: 77.15582300000001
+  },
+  {
+    id: "tigri",
+    branchName: "Tigri Branch",
+    addressLine: "A Block 111, 112, 113 Ground floor Bank Road JJ Colony Tigri, New Delhi-110080 (near Sheetla Mata Mandir)",
+    lat: 28.51182329848319,
+    lng: 77.23747656956373
+  },
+  {
+    id: "uttamnagar",
+    branchName: "Uttam Nagar Branch",
+    addressLine: "RZ-10, Uttam Nagar, Main Najafgarh Road, Near Pillar No. 713, Next to IDBI Bank, Uttam Nagar",
+    lat: 28.620976288266032,
+    lng: 77.0488369663347
   }
 ];
 
@@ -306,7 +326,7 @@ const branchMarkers = [
 ================================ */
 
 let coordinates = {};
-let generatedCoordinates = { shahdra: {}, keshavpuram: {}, mayurvihar: {} };
+let generatedCoordinates = { shahdra: {}, keshavpuram: {}, mayurvihar: {}, tigri: {}, uttamnagar: {} };
 let map, heatLayer;
 let branchLeafletMarkers = [];
 
@@ -316,22 +336,26 @@ let branchLeafletMarkers = [];
 
 async function loadCoordinates() {
   try {
-    const [s, k, m] = await Promise.all([
+    const [s, k, m, t, u] = await Promise.all([
       fetch("data/coordinates_shahdra.json").then(r => r.json()).catch(() => ({})),
       fetch("data/coordinates_keshavpuram.json").then(r => r.json()).catch(() => ({})),
-      fetch("data/coordinates_mayurvihar.json").then(r => r.json()).catch(() => ({}))
+      fetch("data/coordinates_mayurvihar.json").then(r => r.json()).catch(() => ({})),
+      fetch("data/coordinates_tigri.json").then(r => r.json()).catch(() => ({})),
+      fetch("data/coordinates_uttamnagar.json").then(r => r.json()).catch(() => ({}))
     ]);
 
     coordinates = {
       shahdra: s.shahdra || {},
       keshavpuram: k.keshavpuram || {},
-      mayurvihar: m.mayurvihar || {}
+      mayurvihar: m.mayurvihar || {},
+      tigri: t.tigri || {},
+      uttamnagar: u.uttamnagar || {}
     };
     
     console.log("✓ Coordinates loaded");
   } catch (err) {
     console.error("Error loading coordinates:", err);
-    coordinates = { shahdra: {}, keshavpuram: {}, mayurvihar: {} };
+    coordinates = { shahdra: {}, keshavpuram: {}, mayurvihar: {}, tigri: {}, uttamnagar: {} };
   }
 }
 
@@ -455,9 +479,10 @@ function parseCSV(text) {
   }
 
   lines.slice(1).forEach(row => {
-    const cols = row.split(",").map(c => c.trim()).filter(c => c);
+    // Don't filter out empty columns - preserve column positions!
+    const cols = row.split(",").map(c => c.trim());
     cols.forEach((areaName, colIdx) => {
-      if (isValidAreaName(areaName)) {
+      if (areaName && isValidAreaName(areaName)) {
         const monthKeys = Object.keys(result);
         if (colIdx < monthKeys.length) {
           result[monthKeys[colIdx]].push(areaName);
