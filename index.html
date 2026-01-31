@@ -410,10 +410,54 @@ function parseCSV(text) {
     result[monthKey] = [];
   });
 
+  // Function to validate if a string is a valid area name
+  function isValidAreaName(name) {
+    if (!name || name.trim() === "") return false;
+    
+    const upperName = name.toUpperCase().trim();
+    
+    // List of invalid entries to skip
+    const invalidEntries = [
+      "OTHER", "WOM", "SELF", "DONE", "DONE SUGAR", "TEAM GOOGLE", 
+      "#VALUE!", "#REF!", "#N/A", "#ERROR!", "#DIV/0!", "#NAME?",
+      "NA", "N/A", "NIL", "NONE", "NULL", "-", "--", "---",
+      "TEST", "DEMO", "SAMPLE", "UNKNOWN", "NOT AVAILABLE"
+    ];
+    
+    if (invalidEntries.includes(upperName)) return false;
+    
+    // Skip if it contains phone number patterns (10+ digits or starts with +)
+    if (/^\+?\d{10,}$/.test(name.replace(/[\s\-()]/g, ""))) return false;
+    if (/^\d{10,}$/.test(name.replace(/\D/g, ""))) return false;
+    
+    // Skip if it starts with # (Excel errors)
+    if (name.startsWith("#")) return false;
+    
+    // Skip if it's mostly numbers (likely phone or ID)
+    const digitCount = (name.match(/\d/g) || []).length;
+    if (digitCount > 5 && digitCount / name.length > 0.5) return false;
+    
+    // Skip if it's too short (less than 2 characters) or too long (likely a sentence/note)
+    if (name.length < 2 || name.length > 50) return false;
+    
+    // Skip common non-location words that might appear
+    const skipWords = [
+      "GOOGLE", "FACEBOOK", "INSTAGRAM", "WHATSAPP", "JUSTDIAL", "PRACTO",
+      "REFERENCE", "REFERRED", "REFERRAL", "WALK IN", "WALKIN", "WALK-IN",
+      "ONLINE", "OFFLINE", "CALL", "CALLING", "CAMP", "OPD", "IPD"
+    ];
+    if (skipWords.some(word => upperName === word)) return false;
+    
+    // Skip if it looks like a person's name pattern (common titles)
+    if (/^(MR|MRS|MS|DR|SHRI|SMT|KUMAR|SHARMA|SINGH|GUPTA|VERMA)\s/i.test(name)) return false;
+    
+    return true;
+  }
+
   lines.slice(1).forEach(row => {
     const cols = row.split(",").map(c => c.trim()).filter(c => c);
     cols.forEach((areaName, colIdx) => {
-      if (areaName && areaName !== "" && areaName !== "OTHER" && areaName.toUpperCase() !== "WOM") {
+      if (isValidAreaName(areaName)) {
         const monthKeys = Object.keys(result);
         if (colIdx < monthKeys.length) {
           result[monthKeys[colIdx]].push(areaName);
@@ -676,7 +720,7 @@ window.onload = async () => {
   await loadCoordinates();
   document.getElementById("branch").value = "shahdra";
   document.getElementById("startMonth").value = "01";
-  document.getElementById("endMonth").value = "03";
+  document.getElementById("endMonth").value = "01";
   document.getElementById("year").value = "2025";
   
   await generateHeatmap();
