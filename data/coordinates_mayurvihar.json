@@ -1,0 +1,752 @@
+{
+  "mayurvihar": {
+    "Noida": {
+        "lat": 28.5355,
+        "lng": 77.391
+    },
+    "Trilokpuri": {
+      "lat": 28.605,
+      "lng": 77.303
+    },
+    "New Ashok Nagar": {
+      "lat": 28.589,
+      "lng": 77.31
+    },
+    "Ghazipur Village": {
+      "lat": 28.625,
+      "lng": 77.33
+    },
+    "Loni": {
+      "lat": 28.75,
+      "lng": 77.29
+    },
+    "Khichdipur": {
+      "lat": 28.618,
+      "lng": 77.312
+    },
+    "Mandawali": {
+      "lat": 28.625,
+      "lng": 77.29
+    },
+    "Shastri Nagar": {
+      "lat": 28.66,
+      "lng": 77.26
+    },
+    "Okhla": {
+      "lat": 28.555,
+      "lng": 77.285
+    },
+    "Mulla Colony": {
+      "lat": 28.61,
+      "lng": 77.33
+    },
+    "Mustafabad": {
+      "lat": 28.71,
+      "lng": 77.27
+    },
+    "Madanpur Khadar": {
+      "lat": 28.53,
+      "lng": 77.31
+    },
+    "Khoda Colony": {
+      "lat": 28.605,
+      "lng": 77.34
+    },
+    "Noida Sector 63A": {
+      "lat": 28.57,
+      "lng": 77.35
+    },
+    "Sangam Vihar": {
+      "lat": 28.5,
+      "lng": 77.24
+    },
+    "Kora Colony": {
+      "lat": 28.605,
+      "lng": 77.34
+    },
+    "Kabir Nagar": {   
+      "lat": 28.68,
+      "lng": 77.285
+    },
+    "Nand Nagari": {
+      "lat": 28.7,
+      "lng": 77.3
+    },
+    "Vishwas Nagar": {
+      "lat": 28.66,
+      "lng": 77.29
+    },
+    "Hazrat Nizamuddin": {
+      "lat": 28.59,
+      "lng": 77.25
+    },
+    "Bhowapur Kaushambhi": {
+      "lat": 28.63,
+      "lng": 77.33
+    },
+    "Badarpur": {
+      "lat": 28.5,
+      "lng": 77.3
+    },
+    "Kalyanpuri": {
+      "lat": 28.61,
+      "lng": 77.31
+    },
+    "Noida Sector 53": {    
+      "lat": 28.59, 
+      "lng": 77.36
+    },
+    "Sec- 63": {
+      "lat": 28.62,
+      "lng": 77.38
+    },
+    "Tuglakabad Village": {
+      "lat": 28.51,
+      "lng": 77.26
+    },
+    "Shaheed Nagar": {
+      "lat": 28.68,
+      "lng": 77.34
+    },
+    "Jasola": {
+      "lat": 28.53,
+      "lng": 77.285
+    },
+    "Khoda Pusta 1": {
+      "lat": 28.605,
+      "lng": 77.34
+    },
+    "Shri Ram Colony": {
+      "lat": 28.71,
+      "lng": 77.26
+    },
+    "Khoda": {
+      "lat": 28.605,
+      "lng": 77.34 
+    },
+    "Badarpur Border": {
+      "lat": 28.5,
+      "lng": 77.3  
+    },
+    "Bahrampur Gzb": {
+      "lat": 28.63,
+      "lng": 77.43  
+    },
+    "Harkesh Nagar": {
+      "lat": 28.54, 
+      "lng": 77.28  
+    },
+    "Khadar": {
+      "lat": 28.53,
+      "lng": 77.31
+    },
+    "Noida Sector 63": {
+      "lat": 28.62,
+      "lng": 77.38
+    },
+    "Noida Sector 44": {
+      "lat": 28.55,
+      "lng": 77.34
+    },
+    "Sector 31": {
+      "lat": 28.57,
+      "lng": 77.34
+    },
+    "Gzb": {
+      "lat": 28.66,
+      "lng": 77.45
+    },
+    "Ghonda": {
+      "lat": 28.69,
+      "lng": 77.27
+    },
+    "Kaushambi": {
+      "lat": 28.64,
+      "lng": 77.32
+    },
+    "Gharoli Extn.": {
+      "lat": 28.6,
+      "lng": 77.32
+    },
+    "Noida Sector -5": {
+      "lat": 28.57,
+      "lng": 77.35
+    },
+    "Sarai Kale Khan": {
+      "lat": 28.59,
+      "lng": 77.25
+    },
+    "Sector 27 Atta Noida": {
+      "lat": 28.57,
+      "lng": 77.35
+    },
+    "Shashi Garden": {
+      "lat": 28.61,
+      "lng": 77.295
+    },
+    "Harola": { 
+      "lat": 28.58,
+      "lng": 77.32
+    },
+    "Barola": {
+      "lat": 28.55,
+      "lng": 77.37
+    },
+    "Shanti Mohalla": {
+      "lat": 28.66,
+      "lng": 77.27
+    },
+    "Shiv Vihar": {
+      "lat": 28.72,
+      "lng": 77.27
+    },
+    "Usmaan Pur": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "Noida Sector 8": {
+      "lat": 28.6,
+      "lng": 77.33
+    },
+    "Noida Sec 93": {
+      "lat": 28.51, 
+      "lng": 77.38
+    },
+    "Sec 44 Noida": {
+      "lat": 28.57,
+      "lng": 77.35
+    },
+    "Tamur Nagar": {
+      "lat": 28.56,
+      "lng": 77.27
+    },
+    "Vasundhara": {
+      "lat": 28.65,
+      "lng": 77.36
+    },
+    "Vijay Park": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "Tuglakabad": {
+      "lat": 28.51,
+      "lng": 77.26
+    },
+    "Noida Sector 49": {
+      "lat": 28.56,
+      "lng": 77.36
+    },
+    "Dallupura": {
+      "lat": 28.595,
+      "lng": 77.32
+    },
+    "Raj Nagar": {                  
+      "lat": 28.69,
+      "lng": 77.43
+    },
+    "Gautam Puri": {
+      "lat": 28.52,
+      "lng": 77.29
+    },
+    "Noida Sector 22": {
+      "lat": 28.59,
+      "lng": 77.35
+    },
+    "Yamuna Vihar": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "New Seelampur": {
+      "lat": 28.665,
+      "lng": 77.26
+    },
+    "New Mustafabad": {
+      "lat": 28.715,
+      "lng": 77.275
+    },
+    "Dakshinpuri": {
+      "lat": 28.51,
+      "lng": 77.23
+    },
+    "Munga Nagar": {
+      "lat": 28.71,
+      "lng": 77.27
+    },
+    "Mohan Nagar": {
+      "lat": 28.67,
+      "lng": 77.38         
+    },
+    "Amar Colony": {
+      "lat": 28.565,
+      "lng": 77.245
+    },
+    "Ajeet Nagar": {
+      "lat": 28.66,
+      "lng": 77.27          
+    },
+    "Ashok Nagar": {
+      "lat": 28.589,
+      "lng": 77.31     
+    },
+    "New AshokNagar": {
+      "lat": 28.589,
+      "lng": 77.31
+    },
+    "Chauhan Bangar": {
+      "lat": 28.67,
+      "lng": 77.265 
+    },
+    "Chirag Delhi": {
+      "lat": 28.54,
+      "lng": 77.225
+    },
+    "Brahmpuri": {
+      "lat": 28.675,
+      "lng": 77.27
+    },
+    "Biram Puri Kotla Vihar": {
+      "lat": 28.62,
+      "lng": 77.3
+    },
+    "Bhata Haji Pur": {
+      "lat": 28.73,
+      "lng": 77.29
+    },
+    "Bharam Puri": {
+      "lat": 28.675,
+      "lng": 77.27
+    },
+    "Bhagirathi Vihar": {
+      "lat": 28.71,
+      "lng": 77.28
+    },
+    "Behta Hazipur": {
+      "lat": 28.73,
+      "lng": 77.29
+    },
+    "Behrampur Ghaziabad": {
+      "lat": 28.63,
+      "lng": 77.43    
+    },
+    "Behram Pur": {
+      "lat": 28.63,
+      "lng": 77.43    
+    },
+    "Bawana": {
+      "lat": 28.79,
+      "lng": 77.05
+    },
+    "Batla House": {
+      "lat": 28.565,
+      "lng": 77.285
+    },
+    "Basai Sec-70": {
+      "lat": 28.59,
+      "lng": 77.38
+    },
+    "Baholpur Sec-63 Noida": {
+      "lat": 28.62,
+      "lng": 77.39
+    },
+    "Badli": {
+      "lat": 28.73,
+      "lng": 77.14
+    },
+    "Ashok Vihar": {
+      "lat": 28.69,
+      "lng": 77.18
+    },
+    "Ambedkar Nagar": {
+      "lat": 28.52,
+      "lng": 77.235
+    },
+    "Alvy Nagar": {
+      "lat": 28.53,
+      "lng": 77.25           
+    },
+    "Alvi Nagar": {
+      "lat": 28.53,
+      "lng": 77.25
+    },
+    "Budh Vihar": {
+      "lat": 28.71,
+      "lng": 77.09
+    },
+    "Budh Vihar Baharampur": {
+      "lat": 28.63,
+      "lng": 77.43    
+    },
+    "Burari": {
+      "lat": 28.75,
+      "lng": 77.19
+    },
+    "Chand Bagh": {
+      "lat": 28.71,
+      "lng": 77.275  
+    },
+    "Gokulpuri": {
+      "lat": 28.705,
+      "lng": 77.285  
+    },
+    "Govindpuri": {
+      "lat": 28.53,
+      "lng": 77.26
+    },
+    "Metro Hospital": {
+      "lat": 28.59,
+      "lng": 77.34
+    },
+    "Ghazipur": {
+      "lat": 28.625,
+      "lng": 77.33    
+    },
+    "Gautampuri": {
+      "lat": 28.52,
+      "lng": 77.29
+    },
+    "Garima Garden": {
+      "lat": 28.7,
+      "lng": 77.35
+    },
+    "Ganga Vihar": {
+      "lat": 28.7,
+      "lng": 77.28
+    },
+    "Ganga": {
+      "lat": 28.7,
+      "lng": 77.28
+    },
+    "Gandhi Camp": {
+      "lat": 28.58,
+      "lng": 77.3
+    },
+    "Delhi Gate": {
+      "lat": 28.64,
+      "lng": 77.24     
+    },
+    "Daultpur": {
+      "lat": 28.56,
+      "lng": 76.95
+    },
+    "Chilla Village": {
+      "lat": 28.6,
+      "lng": 77.31     
+    },
+    "Chilla": {
+      "lat": 28.6,
+      "lng": 77.31
+    },
+    "Hajipur Sec-104": {
+      "lat": 28.54,
+      "lng": 77.36  
+    },
+     "Harola Village": {
+      "lat": 28.58,
+      "lng": 77.32  
+    },
+    "Indra Enclave": {
+      "lat": 28.69,
+      "lng": 77.07
+    },
+    "Indirapuram": {
+      "lat": 28.64,
+      "lng": 77.37
+    },
+    "Khanpur": {
+      "lat": 28.51,
+      "lng": 77.23  
+    },
+    "Khajuri Khas": {
+      "lat": 28.715,
+      "lng": 77.255
+    },
+    "Kchidipur": {
+      "lat": 28.618,
+      "lng": 77.312
+    },
+    "Karkarmodal Village": {
+      "lat": 28.63,
+      "lng": 77.33
+    },
+    "Karkardooma Gao": {
+      "lat": 28.65,
+      "lng": 77.3
+    },
+    "Kanti Nagar": {
+      "lat": 28.66,
+      "lng": 77.28
+    },
+    "Jpch": {
+      "lat": 28.5,
+      "lng": 77.38
+    },
+    "Johripur": {
+      "lat": 28.705,
+      "lng": 77.295
+    },
+    "Jawahar Nagar": {
+      "lat": 28.68,
+      "lng": 77.21
+    },
+    "Jasola Village": {
+      "lat": 28.53,
+      "lng": 77.29
+    },
+    "Jasola Vihar": {
+      "lat": 28.53,
+      "lng": 77.29
+    },
+    "Janta Colony": {
+      "lat": 28.68,
+      "lng": 77.28
+    },
+    "Jamia Nagar": {
+      "lat": 28.56,
+      "lng": 77.28    
+    },
+    "Indrapuram": {
+      "lat": 28.64,
+      "lng": 77.37
+    },
+    "Khichri Pur": {
+      "lat": 28.618,
+      "lng": 77.312 
+    },
+    "Khureji": {
+      "lat": 28.65,
+      "lng": 77.27
+    },
+    "Khyala": { 
+      "lat": 28.655,
+      "lng": 77.106
+    },
+    "Laxmi Market": {
+      "lat": 28.63,
+      "lng": 77.27
+    },
+    "Loni Alvy Nagar": {
+      "lat": 28.75,
+      "lng": 77.29
+    },
+    "Maan Singh Nagar": {
+      "lat": 28.68,
+      "lng": 77.29
+    },
+    "Maharani Bagh": {
+      "lat": 28.57,
+      "lng": 77.26
+    },
+    "Maujpur": {
+      "lat": 28.681,
+      "lng": 77.27
+    },
+    "Mayur Vihar": {
+      "lat": 28.6,
+      "lng": 77.29  
+    },
+    "Meet Nagar": {
+      "lat": 28.69,
+      "lng": 77.295
+    },
+    "Meetapur": {
+      "lat": 28.5,
+      "lng": 77.3
+    },
+    "Meetapur Badarpur": {
+      "lat": 28.5,
+      "lng": 77.3
+    },
+    "Multani Mohalla": {
+      "lat": 28.66,
+      "lng": 77.26
+    },
+    "Munga Nagar Road Gali Noi 3 Mustafabad": {
+      "lat": 28.71,
+      "lng": 77.27    
+    },
+    "Naveen": {
+      "lat": 28.68,
+      "lng": 77.28
+    },
+    "New Ashok Nagar.": {
+      "lat": 28.589,
+      "lng": 77.31
+    },
+    "New Kondly": {
+      "lat": 28.61,
+      "lng": 77.325
+    },
+    "Nilothi": {    
+      "lat": 28.66,
+      "lng": 77.05    
+    },
+    "Noida Sec 45": {
+      "lat": 28.55,
+      "lng": 77.35   
+    },
+    "Noida Sector 31": {
+      "lat": 28.57,
+      "lng": 77.34
+    },
+    "Noida Sector 41": {
+      "lat": 28.57,
+      "lng": 77.35
+    },
+    "Noida Sector 66": {
+      "lat": 28.6,
+      "lng": 77.37
+    },
+    "Noida Sector-41": {    
+      "lat": 28.57,
+      "lng": 77.35  
+    },
+    "Okhla Vihar": {
+      "lat": 28.56,
+      "lng": 77.29
+    },
+    "Old Kundly": {
+      "lat": 28.61,
+      "lng": 77.31 
+    },
+    "Old Mustfabad": {
+      "lat": 28.71,
+      "lng": 77.27
+    },
+    "Prahladpur": {
+      "lat": 28.5,
+      "lng": 77.29   
+    },
+    "Pratap Nagar": {
+      "lat": 28.67,
+      "lng": 77.2
+    },
+    "Rajeev Nagar": {
+      "lat": 28.71,
+      "lng": 77.3
+    },
+    "Rajiv Nagar": {
+      "lat": 28.71,
+      "lng": 77.3  
+    },
+    "Sadar Bazar": {
+      "lat": 28.65,
+      "lng": 77.21
+    },
+    "Sanjay Colony": {
+      "lat": 28.54,
+      "lng": 77.28
+    },
+    "Sankar Vihar": {
+      "lat": 28.54,
+      "lng": 77.14
+    },
+    "Sarfabad Sec-73": {
+      "lat": 28.58,
+      "lng": 77.39 
+    },
+    "Sarita Vihar": {
+      "lat": 28.53,
+      "lng": 77.29  
+    },
+    "Sec-10 Noida": {
+      "lat": 28.59,
+      "lng": 77.33
+    },
+    "Sec-51 Noida": {
+      "lat": 28.58,
+      "lng": 77.36
+    },
+    "Sec-63": {
+      "lat": 28.62,
+      "lng": 77.38
+    },
+    "Sec-68 Gadi Chukhandi": {
+      "lat": 28.6,
+      "lng": 77.38
+    },
+    "Sector 22": {
+      "lat": 28.59,
+      "lng": 77.35
+    },
+    "Shabad Dairy": {
+      "lat": 28.73,
+      "lng": 77.1
+    },
+    "Shahdara": {
+      "lat": 28.673,
+      "lng": 77.292
+    },
+    "Shri Ram Colony E Block": {
+      "lat": 28.71,
+      "lng": 77.26 
+    },
+    "Soniya Vihar": {
+      "lat": 28.725,
+      "lng": 77.255
+    },
+    "Subhas Vihar": {
+      "lat": 28.7,
+      "lng": 77.28
+    },
+    "Sunder Nagari": {
+      "lat": 28.69,
+      "lng": 77.31 
+    },
+    "Tehkhand Gao": {
+      "lat": 28.53,
+      "lng": 77.28
+    },
+    "Tigdi": {
+      "lat": 28.505,
+      "lng": 77.24
+    },
+    "Tuglkabad": {
+      "lat": 28.51,
+      "lng": 77.26
+    },
+    "Usmanpur": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "Vikas Kunj": {
+      "lat": 28.67,
+      "lng": 77.29
+    },
+    "West Gonda": {
+      "lat": 28.69,
+      "lng": 77.27
+    },
+    "West Vinod Nagar": {
+      "lat": 28.625,
+      "lng": 77.3
+    },
+    "Zafrabad": {
+      "lat": 28.675,
+      "lng": 77.26
+    },
+    "Zakhira": {
+      "lat": 28.67,
+      "lng": 77.17
+    },
+    "Harsh Vihar": {
+      "lat": 28.7022,
+      "lng": 77.3236   
+    },
+    "Tuglakabad Extension": {
+      "lat": 28.5228,
+      "lng": 77.2591  
+    },
+    "Nehru Vihar": {
+      "lat": 28.7107,
+      "lng": 77.2212
+    },
+    "Shaihabdabd": {
+      "lat": 28.75,
+      "lng": 77.114
+    },
+    "Sector 62": {
+      "lat": 28.617,
+      "lng": 77.3736
+    }
+}
+}

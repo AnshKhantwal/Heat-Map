@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head> 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Patient Heatmap Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+    <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 20px;
+      }
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+      }
+      .header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      .header h1 {
+        font-size: 28px;
+        margin-bottom: 10px;
+      }
+      .header p {
+        opacity: 0.9;
+        font-size: 14px;
+      }
+      .controls {
+        background: #f8f9fa;
+        padding: 25px;
+        border-bottom: 1px solid #e9ecef;
+      }
+      .control-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        align-items: flex-end;
+      }
+      .control-group {
+        display: flex;
+        flex-direction: column;
+      }
+      .control-group label {
+        font-weight: 600;
+        margin-bottom: 8px;
+        color: #333;
+        font-size: 14px;
+      }
+      .control-group select,
+      .control-group button {
+        padding: 12px 15px;
+        border: 2px solid #ddd;
+        border-radius: 6px;
+        font-size: 14px;
+        transition: all 0.3s ease;
+      }
+      .control-group button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+      }
+      .control-group button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+      }
+      #map {
+        width: 100%;
+        height: 600px;
+        background: #e9ecef;
+        position: relative;
+      }
+      .info-panel {
+        background: #f8f9fa;
+        padding: 20px;
+        border-top: 1px solid #e9ecef;
+        font-size: 14px;
+        color: #666;
+      }
+      .legend {
+        background: white;
+        padding: 15px;
+        border-radius: 5px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        font-size: 12px;
+        position: absolute;
+        bottom: 50px;
+        right: 20px;
+        z-index: 400;
+        line-height: 1.8;
+      }
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+      .legend-color {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+      }
+      .app-footer {
+        text-align: center;
+        padding: 18px;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #ffffff;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      }
+      .app-footer strong {
+        font-weight: 700;
+        color: #ffeaa7;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>🏥 Patient Distribution Heatmap</h1>
+        <p>Analyze patient distribution across Delhi branches by area</p>
+      </div>
+
+      <div class="controls">
+        <div class="control-row">
+          <div class="control-group">
+            <label for="branch">Select Branch</label>
+            <select id="branch">
+              <option value="shahdra">Shahdra</option>
+              <option value="keshavpuram">Keshavpuram</option>
+              <option value="mayur-vihar">Mayur Vihar</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="startMonth">From Month</label>
+            <select id="startMonth">
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="endMonth">To Month</label>
+            <select id="endMonth">
+              <option value="01">January</option>
+              <option value="02">February</option>
+              <option value="03">March</option>
+              <option value="04">April</option>
+              <option value="05">May</option>
+              <option value="06">June</option>
+              <option value="07">July</option>
+              <option value="08">August</option>
+              <option value="09">September</option>
+              <option value="10">October</option>
+              <option value="11">November</option>
+              <option value="12">December</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <label for="year">Select Year</label>
+            <select id="year">
+              <option value="2025">2025</option>
+            </select>
+          </div>
+
+          <div class="control-group">
+            <button onclick="generateHeatmap()">🔍 Search & Update</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="map"></div>
+
+      <div class="info-panel">
+        <strong>Selected:</strong>
+        <span id="selection-info">Shahdra - January 2025</span> <br /><strong
+          >Total Patients:</strong
+        >
+        <span id="patient-count">0</span>
+      </div>
+    </div>
+
+    <!-- external data files should set window.data_shahdra, window.data_keshavpuram, window.data_mayurvihar -->
+    <script src="data/shahdra.js"></script>
+    <script src="data/keshavpuram.js"></script>
+    <script src="data/mayurvihar.js"></script>
+
+    <script>
+      const patientData = {
+        shahdra: window.data_shahdra,
+        keshavpuram: window.data_keshavpuram,
+        "mayur-vihar": window.data_mayurvihar,
+      };
+
+      const branchMarkers = [
+        {
+          id: "mayur-vihar",
+          branchName: "Mayur Vihar Branch",
+          addressLine:
+            "TB Clinic, DDA Market, F-7, Mayur Vihar Phase I, Pocket 1, Delhi 110091",
+          lat: 28.587823577313883,
+          lng: 77.29524796030913,
+          mapEmbedUrl:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14013.393457591605!2d77.29524796030913!3d28.587823577313883!2m3!1f0!2f0!3f0!3m2!1i1024!2i777!4f13.1!3m3!1m2!1s0x390ce5001a143a87%3A0x8b32616f74a001f3!2sTBclinic.in!5e0!3m2!1sen!2sin!4v1679048700000!5m2!1sen!2sin",
+        },
+        {
+          id: "shahdra",
+          branchName: "Durgapuri Branch (Shahdara)",
+          addressLine:
+            "C-45, West Jyoti Nagar, Durgapuri Extension, Shahdara, Delhi, 110094",
+          lat: 28.670281175652055,
+          lng: 77.29041017548658,
+          mapEmbedUrl:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3500.419269067733!2d77.29041017548658!3d28.670281175652055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfb6d859a1175%3A0x6b7a5e8c18c5e69e!2sMed%20Cross%20Clinic!5e0!3m2!1sen!2sin!4v1730412380000!5m2!1sen!2sin",
+        },
+        {
+          id: "keshavpuram",
+          branchName: "Lawrence Road Branch (Keshavpuram)",
+          addressLine:
+            "C-8/139, Lawrence Road Gate No 3, Keshavpuram, Delhi -35",
+          lat: 28.690205,
+          lng: 77.15582300000001,
+          mapEmbedUrl:
+            "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3499.7820984852023!2d77.15582300000001!3d28.690205!2m3!1f0!2f0!3f0!3m2!1i1024!2i777!4f13.1!3m3!1m2!1s0x390d02330a6e3d55%3A0x16236777036885547770!2sMED%20CROSS%20CLINIC!5e0!3m2!1sen!2sin",
+        },
+      ];
+
+      let map;
+      let circleMarkers = []; // kept for legacy, but we won't add circles now
+      let branchLeafletMarkers = []; // {id, marker}
+      let heatLayer;
+
+      function getHeatColor(intensity) {
+        return intensity > 0.8
+          ? "#d73027"
+          : intensity > 0.6
+          ? "#fc8d59"
+          : intensity > 0.4
+          ? "#fee08b"
+          : intensity > 0.2
+          ? "#66bd63"
+          : "#1a9850";
+      }
+
+      function initMap() {
+        const defaultCenter =
+          patientData.shahdra && patientData.shahdra.center
+            ? patientData.shahdra.center
+            : [28.6139, 77.209];
+        map = L.map("map").setView(defaultCenter, 11);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "© OpenStreetMap contributors",
+          maxZoom: 19,
+          opacity: 0.55,
+        }).addTo(map);
+
+        // legend
+        const legend = L.control({ position: "bottomright" });
+        legend.onAdd = function () {
+          const div = L.DomUtil.create("div", "legend");
+          const intensities = [
+            { label: "Low (20%)", color: "#1a9850" },
+            { label: "Medium (40%)", color: "#66bd63" },
+            { label: "High (60%)", color: "#fee08b" },
+            { label: "Very High (80%)", color: "#fc8d59" },
+            { label: "Critical (100%)", color: "#d73027" },
+          ];
+          div.innerHTML = "<strong>Patient Density</strong><br>";
+          intensities.forEach((item) => {
+            div.innerHTML += `<div class="legend-item"><div class="legend-color" style="background:${item.color}"></div>${item.label}</div>`;
+          });
+          return div;
+        };
+        legend.addTo(map);
+
+        addBranchMarkers();
+      }
+
+      function addBranchMarkers() {
+        const icon = L.icon({
+          iconUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+          iconRetinaUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        });
+
+        // remove existing (idempotent)
+        branchLeafletMarkers.forEach((m) => map.removeLayer(m.marker));
+        branchLeafletMarkers = [];
+
+        branchMarkers.forEach((b) => {
+          const marker = L.marker([b.lat, b.lng], { icon }).addTo(map);
+          const popupHtml = `
+                    <div style="font-weight:700;margin-bottom:6px;">${b.branchName}</div>
+                    <div style="font-size:13px;margin-bottom:6px;">${b.addressLine}</div>
+                    <div><a href="${b.mapEmbedUrl}" target="_blank" rel="noopener">Open in Google Maps</a></div>
+                `;
+          marker.bindPopup(popupHtml);
+          branchLeafletMarkers.push({ id: b.id, marker });
+        });
+      }
+
+      // generateHeatmap without small circle markers
+      function generateHeatmap() {
+        try {
+          const branch = document.getElementById("branch").value;
+          const year = document.getElementById("year").value;
+          const startMonth = parseInt(
+            document.getElementById("startMonth").value
+          );
+          const endMonth = parseInt(document.getElementById("endMonth").value);
+
+          const branchInfo = branchMarkers.find((b) => b.id === branch);
+          const startLabel =
+            document.getElementById("startMonth").selectedOptions[0].text;
+          const endLabel =
+            document.getElementById("endMonth").selectedOptions[0].text;
+          document.getElementById("selection-info").textContent = `${
+            branchInfo ? branchInfo.branchName : branch
+          } — ${startLabel} to ${endLabel} ${year}`;
+
+          // build months
+          const monthList = [];
+          for (let m = startMonth; m <= endMonth; m++)
+            monthList.push(`${year}-${m.toString().padStart(2, "0")}`);
+
+          const branchData = patientData[branch];
+          if (!branchData || !branchData.areas) {
+            // show only selected marker if it exists
+            branchLeafletMarkers.forEach((bm) => {
+              if (bm.id === branch) map.addLayer(bm.marker);
+              else map.removeLayer(bm.marker);
+            });
+            alert("No data available for selected branch.");
+            return;
+          }
+
+          // remove previous heat
+          if (heatLayer) map.removeLayer(heatLayer);
+
+          // clear any legacy circle markers (we won't add new ones)
+          circleMarkers.forEach((m) => map.removeLayer(m));
+          circleMarkers = [];
+
+          let totalPatients = 0;
+          const heatPoints = [];
+
+          branchData.areas.forEach((area) => {
+            let patientCount = 0;
+            monthList.forEach((mm) => (patientCount += area.patients[mm] || 0));
+            totalPatients += patientCount;
+            if (patientCount < 1) return;
+            const intensity = Math.min(patientCount / 50, 1);
+            heatPoints.push([area.lat, area.lng, intensity]);
+          });
+
+          // add heatlayer only
+          heatLayer = L.heatLayer(heatPoints, {
+            radius: 35,
+            blur: 20,
+            minOpacity: 0.3,
+            maxZoom: 11,
+            gradient: {
+              0.2: "#1a9850",
+              0.4: "#66bd63",
+              0.6: "#fee08b",
+              0.8: "#fc8d59",
+              1.0: "#d73027",
+            },
+          }).addTo(map);
+
+          // show only selected marker
+          branchLeafletMarkers.forEach((bm) => {
+            if (bm.id === branch) map.addLayer(bm.marker);
+            else map.removeLayer(bm.marker);
+          });
+
+          // fit bounds to selected marker + heat points
+          const bounds = L.latLngBounds([]);
+          const selectedMarker = branchLeafletMarkers.find(
+            (bm) => bm.id === branch
+          );
+          if (selectedMarker) bounds.extend(selectedMarker.marker.getLatLng());
+          heatPoints.forEach((p) => bounds.extend([p[0], p[1]]));
+
+          if (bounds.isValid()) map.fitBounds(bounds.pad(0.25));
+          else if (branchData.center) map.setView(branchData.center, 12);
+
+          document.getElementById("patient-count").textContent = totalPatients;
+        } catch (err) {
+          console.error(err);
+        }
+      }
+
+      window.addEventListener("load", () => {
+        initMap();
+        generateHeatmap(); // initial render
+      });
+    </script>
+
+    <footer class="app-footer">
+      <p>Designed & Developed by <strong>Ansh Khantwal</strong></p>
+    </footer>
+  </body>
+</html>

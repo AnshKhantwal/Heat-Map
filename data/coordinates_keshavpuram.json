@@ -1,0 +1,464 @@
+{
+    "keshavpuram": {
+    "Mangolpuri": {
+        "lat": 28.693,
+        "lng": 77.099
+    },
+    "Shakurpur": {
+        "lat": 28.69,
+        "lng": 77.14
+    },
+    "Nihal Vihar": {
+        "lat": 28.66,
+        "lng": 77.07
+    },
+    "Sultanpuri": {
+        "lat": 28.7,
+        "lng": 77.07
+    },
+    "Aman Vihar": {
+        "lat": 28.7,
+        "lng": 77.07
+    },
+    "Budh Vihar": {
+        "lat": 28.71,
+        "lng": 77.09
+    },
+    "Vijay Vihar": {
+        "lat": 28.71,
+        "lng": 77.1
+    },
+    "Shalimar Bagh": {
+        "lat": 28.72,
+        "lng": 77.16
+    },
+    "Nangloi": {
+        "lat": 28.68,
+        "lng": 77.07
+    },
+    "Zakhira": {
+        "lat": 28.67,
+        "lng": 77.17
+    },
+    "Rohini": {
+        "lat": 28.74,
+        "lng": 77.08
+    },
+    "Wazirpur": {
+        "lat": 28.7,
+        "lng": 77.16
+    },
+    "Bawana": {
+        "lat": 28.79,
+        "lng": 77.05
+    },
+    "Prem Nagar": {
+        "lat": 28.69,
+        "lng": 77.06
+    },
+    "Badli": {
+        "lat": 28.73,
+        "lng": 77.14
+    },
+    "Haiderpur": {
+        "lat": 28.71,
+        "lng": 77.15
+    },
+    "Inderpuri": {
+        "lat": 28.63,
+        "lng": 77.15
+    },
+    "Shahbad Dairy": {
+        "lat": 28.73,
+        "lng": 77.1
+    },
+    "Krishan Vihar": {
+        "lat": 28.7,
+        "lng": 77.05
+    },
+    "Prahlad Pur": {
+        "lat": 28.74,
+        "lng": 77.12
+    },
+    "Baljeet Nagar": {
+        "lat": 28.66,
+        "lng": 77.15
+    },
+    "Rama Vihar": {
+        "lat": 28.72,
+        "lng": 77.04
+    },
+    "Siraspur": {
+        "lat": 28.76,
+        "lng": 77.14
+    },
+    "Madipur": {
+        "lat": 28.67,
+        "lng": 77.12
+    },
+    "Jahangirpuri": {
+        "lat": 28.72,
+        "lng": 77.17
+    },
+    "Raghubir Nagar": {
+        "lat": 28.649,
+        "lng": 77.106
+    },
+    "Karala": {
+        "lat": 28.73,
+        "lng": 77.04
+    },
+    "Kirti Nagar": {
+        "lat": 28.65,
+        "lng": 77.13
+    },
+    "Mayapuri": {
+        "lat": 28.63,
+        "lng": 77.13
+    },
+    "Rithala": {
+        "lat": 28.72,
+        "lng": 77.11
+    },
+    "Mukund Pur": {
+        "lat": 28.74,
+        "lng": 77.18
+    },
+    "Anand Parvat": {
+        "lat": 28.65,
+        "lng": 77.17
+    },
+    "Begum Pur": {
+        "lat": 28.72,
+        "lng": 77.08
+    },
+    "Pitam Pura": {
+        "lat": 28.703,
+        "lng": 77.132
+    },
+    "Karol Bagh": {
+        "lat": 28.65,
+        "lng": 77.19
+    },
+    "Samaypur": {
+        "lat": 28.75,
+        "lng": 77.14
+    },
+    "Sadar Bazar": {
+        "lat": 28.65,
+        "lng": 77.21
+    },
+    "Daulatpur": {
+        "lat": 28.56,
+        "lng": 76.95
+    },
+    "Tri Nagar": {
+        "lat": 28.69,
+        "lng": 77.16
+    },
+    "Peeragarhi": {
+        "lat": 28.67,
+        "lng": 77.09
+    },
+    "Jain Nagar": {
+        "lat": 28.72,
+        "lng": 77.04
+    },
+    "Khyala": {
+        "lat": 28.655,
+        "lng": 77.106
+    },
+    "Uttam Nagar": {
+        "lat": 28.62,
+        "lng": 77.06
+    },
+    "Bhalswa": {
+        "lat": 28.74,
+        "lng": 77.17
+    },
+    "Mundka": {
+        "lat": 28.68,
+        "lng": 77.03
+    },
+    "Prem Nagar-2": {
+        "lat": 28.69,
+        "lng": 77.06
+    },
+    "Inder Enclave": {
+        "lat": 28.69,
+        "lng": 77.07
+    },
+    "Vishnu Garden": {
+        "lat": 28.65,
+        "lng": 77.1
+    },
+    "Azadpur": {
+        "lat": 28.7,
+        "lng": 77.18
+    },
+    "Swaroop Nagar": {
+        "lat": 28.75,
+        "lng": 77.16
+    },
+    "Mubarak Pur": {
+        "lat": 28.71,
+        "lng": 77.06
+    },
+    "Ashok Vihar": {
+        "lat": 28.69,
+        "lng": 77.18
+    },
+    "Pitampura": {
+        "lat": 28.703,
+        "lng": 77.132
+    },
+    "Puth Khurd": {
+        "lat": 28.77,
+        "lng": 77.05
+    },
+    "Nilothi": {
+        "lat": 28.66,
+        "lng": 77.05
+    },
+    "Sarai Rohilla": {
+        "lat": 28.66,
+        "lng": 77.18
+    },
+    "Rajveer": {
+        "lat": 28.65,
+        "lng": 77.3
+    },
+    "Nagloi": {
+        "lat": 28.68,
+        "lng": 77.07
+    },
+    "Kishan Ganj": {
+        "lat": 28.66,
+        "lng": 77.19
+    },
+    "Daya Basti": {
+        "lat": 28.67,
+        "lng": 77.17
+    },
+    "Wazirpur J J Colony": {
+        "lat": 28.7,
+        "lng": 77.16
+    },
+    "Kishan Gunj": {
+        "lat": 28.66,
+        "lng": 77.19
+    },
+    "West Patel Nager": {
+        "lat": 28.65,
+        "lng": 77.15
+    },
+    "Moti Nagar": {
+        "lat": 28.66,
+        "lng": 77.14
+    },
+    "Pandav Nagar": {
+        "lat": 28.64,
+        "lng": 77.16
+    },
+    "Prem Nagar-3": {
+        "lat": 28.69,
+        "lng": 77.06
+    },
+    "Shabad Dairy": {
+        "lat": 28.73,
+        "lng": 77.1
+    },
+    "Vijay Nagar": {
+        "lat": 28.69,
+        "lng": 77.2
+    },
+    "Wazirpur Industrial Area": {
+        "lat": 28.7,
+        "lng": 77.16
+    },
+    "Sadar": {
+        "lat": 28.65,
+        "lng": 77.21
+    },
+    "Rohini Sec-7": {
+        "lat": 28.7,
+        "lng": 77.11
+    },
+    "Uttam Nagar East": {
+        "lat": 28.62,
+        "lng": 77.07
+    },
+    "Shalimar Village": {
+        "lat": 28.72,
+        "lng": 77.15
+    },
+    "Tegor Garden": {
+        "lat": 28.65,
+        "lng": 77.11
+    },
+    "Sukhbir Nagar": {
+        "lat": 28.71,
+        "lng": 77.08
+    },
+    "Subzi Mandi": {
+        "lat": 28.67,
+        "lng": 77.19
+    },
+    "Sawda": {
+        "lat": 28.68,
+        "lng": 76.99
+    },
+    "Shiv Vihar": {
+        "lat": 28.65,
+        "lng": 77.05
+    },
+    "Shastri Nagar": {
+        "lat": 28.67,
+        "lng": 77.18
+    },
+    "Siraspur.": {
+        "lat": 28.76,
+        "lng": 77.14
+    },
+    "110083": {
+        "lat": 28.693,
+        "lng": 77.099
+    },
+    "Rajiv Nagar": {
+        "lat": 28.73,
+        "lng": 77.09
+    },
+    "Chanchal Park": {
+        "lat": 28.65,
+        "lng": 77.04
+    },
+    "Jama Masjid": {
+        "lat": 28.65,
+        "lng": 77.23
+    },
+    "Ibrahimpur": {
+        "lat": 28.78,
+        "lng": 77.16
+    },
+    "Holambi Kalan": {
+        "lat": 28.8,
+        "lng": 77.08
+    },
+    "Haiderpur/ Badli": {
+        "lat": 28.72,
+        "lng": 77.15
+    },
+    "Gopalpurei": {
+        "lat": 28.7,
+        "lng": 77.2
+    },
+    "Filami Sthan": {
+        "lat": 28.65,
+        "lng": 77.21
+    },
+    "Burari": {
+        "lat": 28.75,
+        "lng": 77.19
+    },
+    "BaljeetNagar": {
+        "lat": 28.66,
+        "lng": 77.14
+    },
+    "Bhalaswa Dairy": {
+        "lat": 28.74,
+        "lng": 77.17
+    },
+    "Bhalaswa": {
+      "lat": 28.74,
+      "lng": 77.17
+    },
+    "Begumpur": {
+      "lat": 28.72,
+      "lng": 77.08
+    },
+    "Begam Pur": {
+      "lat": 28.72,
+      "lng": 77.08
+    },
+    "Barwala": {
+      "lat": 28.76,
+      "lng": 77.05
+    },
+    "Azad Market": {
+      "lat": 28.66,
+      "lng": 77.2
+    },
+    "Ashok Vihar Phase 3": {
+      "lat": 28.69,
+      "lng": 77.18
+    },
+    "Kanjhwla Rd": {
+      "lat": 28.72,
+      "lng": 77.06
+    },
+    "Khalaya": {
+      "lat": 28.655,
+      "lng": 77.106
+    },
+    "PremNagar": {
+      "lat": 28.69,
+      "lng": 77.06
+    },
+    "TriNagar": {
+      "lat": 28.69,
+      "lng": 77.06
+    },
+    "Pooth Khurd": {
+      "lat": 28.77,
+      "lng": 77.05
+    },
+    "Patel Nagar": {
+      "lat": 28.65,
+      "lng": 77.16
+    },
+    "Paschim Vihar": {
+      "lat": 28.67,
+      "lng": 77.1
+    },
+    "Pahad Gunj": {
+      "lat": 28.64,
+      "lng": 77.21
+    },
+    "Nilothi Village": {
+      "lat": 28.66,
+      "lng": 77.05
+    },
+    "nangloi": {
+      "lat": 28.68,
+      "lng": 77.07
+    },
+    "Nabi Karim": {
+      "lat": 28.65,
+      "lng": 77.21
+    },
+    "Mukundpur Part 2": {
+      "lat": 28.74,
+      "lng": 77.18
+    },
+    "Mukundpur": {
+      "lat": 28.74,
+      "lng": 77.18
+    },
+    "Madipur Colony": {
+      "lat": 28.6889,
+      "lng": 77.0872
+    },
+    "Libas Pur": {
+      "lat": 28.76,
+      "lng": 77.15
+    },
+    "Khurd": {
+      "lat": 28.78,
+      "lng": 77.08
+    },
+    "Najafgarh": {
+      "lat": 28.61,
+      "lng": 76.98
+    }
+}
+}

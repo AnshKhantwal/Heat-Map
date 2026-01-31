@@ -1,0 +1,312 @@
+{
+  "shahdra": {
+    "Loni": {
+      "lat": 28.755,
+      "lng": 77.29
+    },
+    "Mustafabad": {
+      "lat": 28.712,
+      "lng": 77.272
+    },
+    "Ganga": {
+      "lat": 28.7,
+      "lng": 77.28
+    },
+    "New Mustfabad": {
+      "lat": 28.715,
+      "lng": 77.275
+    },
+    "Karawal Nagar": {
+      "lat": 28.73,
+      "lng": 77.27
+    },
+    "Seelampur": {
+      "lat": 28.665,
+      "lng": 77.265
+    },
+    "Mandoli": {
+      "lat": 28.705,
+      "lng": 77.315
+    },
+    "Brahmpuri": {
+      "lat": 28.675,
+      "lng": 77.268
+    },
+    "Kabir Nagar": {
+      "lat": 28.68,
+      "lng": 77.285
+    },
+    "Chauhan Bangar": {
+      "lat": 28.67,
+      "lng": 77.265
+    },
+    "New Seelampur": {
+      "lat": 28.667,
+      "lng": 77.265
+    },
+    "Rajiv Nagar": {
+      "lat": 28.71,
+      "lng": 77.3
+    },
+    "Nand Nagari": {
+      "lat": 28.7,
+      "lng": 77.3
+    },
+    "Shri Ram Colony": {
+      "lat": 28.71,
+      "lng": 77.26
+    },
+    "Sonia Vihar": {
+      "lat": 28.725,
+      "lng": 77.255
+    },
+    "Zafrabad": {
+      "lat": 28.675,
+      "lng": 77.26
+    },
+    "Khajuri Khass": {
+      "lat": 28.715,
+      "lng": 77.255
+    },
+    "Brij Puri": {
+      "lat": 28.7,
+      "lng": 77.285
+    },
+    "Janta Colony": {
+      "lat": 28.68,
+      "lng": 77.285
+    },
+    "Johri Pur": {
+      "lat": 28.705,
+      "lng": 77.295
+    },
+    "Gokal Puri": {
+      "lat": 28.705,
+      "lng": 77.285
+    },
+    "East": {
+      "lat": 28.66,
+      "lng": 77.28
+    },
+    "Jafrabad": {
+      "lat": 28.675,
+      "lng": 77.26
+    },
+    "Loni.": {
+      "lat": 28.755,
+      "lng": 77.29
+    },
+    "Shanti Mohalla": {
+      "lat": 28.68,
+      "lng": 77.27
+    },
+    "Raj Nagar": {
+      "lat": 28.69,
+      "lng": 77.43
+    },
+    "Bhopura": {
+      "lat": 28.695,
+      "lng": 77.345
+    },
+    "Kardampuri": {
+      "lat": 28.685,
+      "lng": 77.28
+    },
+    "Subhash Mohalla": {
+      "lat": 28.67,
+      "lng": 77.27
+    },
+    "Ashok Nagar": {
+      "lat": 28.695,
+      "lng": 77.295
+    },
+    "Harsh Vihar": {
+      "lat": 28.71,
+      "lng": 77.3
+    },
+    "Gandhi Nagar": {
+      "lat": 28.665,
+      "lng": 77.27
+    },
+    "Loni Border": {
+      "lat": 28.72,
+      "lng": 77.295
+    },
+    "Maujpur": {
+      "lat": 28.681,
+      "lng": 77.27
+    },
+    "Welcome": {
+      "lat": 28.67,
+      "lng": 77.28
+    },
+    "Kailash Nagar": {
+      "lat": 28.655,
+      "lng": 77.27
+    },
+    "Meet Nagar": {
+      "lat": 28.69,
+      "lng": 77.295
+    },
+    "Yamuna Vihar": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "Sunder Nagri": {
+      "lat": 28.69,
+      "lng": 77.31
+    },
+    "Chauhan Banger": {
+      "lat": 28.67,
+      "lng": 77.265
+    },
+    "Kanti Nagar": {
+      "lat": 28.66,
+      "lng": 77.285
+    },
+    "Johripur": {
+      "lat": 28.705,
+      "lng": 77.295
+    },
+    "Agra": {
+      "lat": 27.176,
+      "lng": 78.008
+    },
+    "Shahdara": {
+      "lat": 28.673,
+      "lng": 77.292
+    },
+    "New Usmanpur": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "Seemapuri": {
+      "lat": 28.685,
+      "lng": 77.33
+    },
+    "Ram Park": {
+      "lat": 28.74,
+      "lng": 77.28
+    },
+    "Old Seelampur": {
+      "lat": 28.665,
+      "lng": 77.265
+    },
+    "Rohtash Nagar": {
+      "lat": 28.675,
+      "lng": 77.29
+    },
+    "Shastri Park": {
+      "lat": 28.665,
+      "lng": 77.25
+    },
+    "Dayalpur": {
+      "lat": 28.71,
+      "lng": 77.265
+    },
+    "Jagjit Nagar": {
+      "lat": 28.69,
+      "lng": 77.27
+    },
+    "Madanpur Khadar": {
+      "lat": 28.53,
+      "lng": 77.31
+    },
+    "Subhash Park": {
+      "lat": 28.68,
+      "lng": 77.28
+    },
+    "Krishna Nagar": {
+      "lat": 28.66,
+      "lng": 77.28
+    },
+    "Jaffrabad": {
+      "lat": 28.675,
+      "lng": 77.26
+    },
+    "Loni Road": {
+      "lat": 28.7,
+      "lng": 77.29
+    },
+    "Babarpur": {
+      "lat": 28.688,
+      "lng": 77.28
+    },
+    "Anand Vihar": {
+      "lat": 28.645,
+      "lng": 77.315
+    },
+    "Ram Nagar": {
+      "lat": 28.68,
+      "lng": 77.29
+    },
+    "Rani Garden": {
+      "lat": 28.66,
+      "lng": 77.26
+    },
+    "Usmanpur": {
+      "lat": 28.69,
+      "lng": 77.26
+    },
+    "Trilok Puri": {
+      "lat": 28.605,
+      "lng": 77.303
+    },
+    "Nand Nagri": {
+      "lat": 28.7,
+      "lng": 77.3
+    },
+    "Rashid Market": {
+      "lat": 28.65,
+      "lng": 77.275
+    },
+    "Old Seemapuri": {
+      "lat": 28.685,
+      "lng": 77.33
+    },
+    "Old Mustfabad": {
+      "lat": 28.71,
+      "lng": 77.27
+    },
+    "New Mustafabad": {
+      "lat": 28.715,
+      "lng": 77.275
+    },
+    "Vishwas Nagar": {
+      "lat": 28.665,
+      "lng": 77.295
+    },
+    "Vivek Vihar": {
+      "lat": 28.67,
+      "lng": 77.315
+    },
+    "Sundar Nagari": {
+      "lat": 28.69,
+      "lng": 77.31
+    },
+    "Bhajanpura": {
+      "lat": 28.703,
+      "lng": 77.263
+    },
+    "Baghpathi": {
+      "lat": 28.945,
+      "lng": 77.225
+    },
+    "Baljeet Nagar": {
+      "lat": 28.66,
+      "lng": 77.15
+    },
+    "Khera": {
+      "lat": 28.67,
+      "lng": 77.33
+    },
+    "Geeta Colony": {
+      "lat": 28.655,
+      "lng": 77.265
+    },
+    "Rajiv nagar": {
+      "lat": 28.695,
+      "lng": 77.345
+    }
+  }
+}
