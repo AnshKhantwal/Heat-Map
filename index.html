@@ -54,7 +54,7 @@
 
         .control-row {
             display: grid;
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(6, minmax(0, 1fr));
             gap: 18px;
             align-items: flex-end;
         }
@@ -184,6 +184,14 @@
     <div class="controls">
         <div class="control-row">
             <div class="control-group">
+                <label>Data Type</label>
+                <select id="dataType">
+                    <option value="doctors">Doctors</option>
+                    <option value="patients">Patients</option>
+                </select>
+            </div>
+
+            <div class="control-group">
                 <label>Select Branch</label>
                 <select id="branch">
                     <option value="shahdra">Shahdra</option>
@@ -263,23 +271,44 @@
    CONFIG
 ================================ */
 
-const SPREADSHEET_ID = "18iugkkdqpBrxaFYTtm3w_pMqRcZr46NtAsMtydsJoDE";
+const SPREADSHEET_IDS = {
+  doctors: "18iugkkdqpBrxaFYTtm3w_pMqRcZr46NtAsMtydsJoDE",
+  patients: "1U0JrZjcx8EtngA9RSHErMHSgn9Fn774primy1lhjt5g"
+};
 const GEOCODING_API_KEY = "AIzaSyDCFngxtr0kabvbfPPUbDSlkv9Z1yFAuMw"; // Leave empty if not using, add key to enable auto-generation
 
 const sheetGIDs = {
-  2025: {
-    shahdra: "0",
-    keshavpuram: "68749806",
-    mayurvihar: "1783876413",
-    tigri: "389517366",
-    uttamnagar: "1397431706"
+  doctors: {
+    2025: {
+      shahdra: "0",
+      keshavpuram: "68749806",
+      mayurvihar: "1783876413",
+      tigri: "389517366",
+      uttamnagar: "1397431706"
+    },
+    2026: {
+      shahdra: "974309338",
+      keshavpuram: "1480543339",
+      mayurvihar: "441975283",
+      tigri: "2117592559",
+      uttamnagar: "1079630349"
+    }
   },
-  2026: {
-    shahdra: "974309338",
-    keshavpuram: "1480543339",
-    mayurvihar: "441975283",
-    tigri: "2117592559",
-    uttamnagar: "1079630349"
+  patients: {
+    2025: {
+      shahdra: "0",
+      keshavpuram: "614910838",
+      mayurvihar: "567704715",
+      tigri: "1090498939",
+      uttamnagar: "391499502"
+    },
+    2026: {
+      shahdra: "1411998978",
+      keshavpuram: "891130830",
+      mayurvihar: "1190430256",
+      tigri: "1493142650",
+      uttamnagar: "1739979788"
+    }
   }
 };
 
@@ -364,8 +393,181 @@ async function loadCoordinates() {
    GEOCODING (Optional)
 ================================ */
 
+// Validate if a string looks like a real place/area name suitable for geocoding
+function isValidPlaceForGeocoding(name) {
+  if (!name || name.trim() === "") return false;
+  
+  const cleanName = name.trim();
+  const upperName = cleanName.toUpperCase();
+  
+  // Must be at least 3 characters and not too long
+  if (cleanName.length < 3 || cleanName.length > 60) return false;
+  
+  // Skip if it's purely numeric or mostly numbers
+  if (/^\d+$/.test(cleanName)) return false;
+  const digitCount = (cleanName.match(/\d/g) || []).length;
+  if (digitCount / cleanName.length > 0.4) return false;
+  
+  // Skip phone numbers (various formats)
+  if (/^\+?\d[\d\s\-()]{8,}$/.test(cleanName.replace(/\s/g, ""))) return false;
+  
+  // Skip email addresses
+  if (/@/.test(cleanName)) return false;
+  
+  // Skip URLs
+  if (/^(http|www\.|\.com|\.in|\.org)/i.test(cleanName)) return false;
+  
+  // Skip Excel/spreadsheet errors
+  if (/^#(VALUE|REF|N\/A|ERROR|DIV|NAME|NULL)/.test(upperName)) return false;
+  
+  // Skip common invalid/placeholder entries
+  const invalidEntries = [
+    "OTHER", "OTHERS", "WOM", "SELF", "DONE", "NONE", "NIL", "NULL", "NA", "N/A",
+    "TEST", "DEMO", "SAMPLE", "UNKNOWN", "NOT AVAILABLE", "NOT KNOWN", "PENDING",
+    "YES", "NO", "OK", "OKAY", "FINE", "GOOD", "BAD", "NEW", "OLD",
+    "TEAM GOOGLE", "GOOGLE", "FACEBOOK", "INSTAGRAM", "WHATSAPP", "JUSTDIAL", "PRACTO",
+    "REFERENCE", "REFERRED", "REFERRAL", "WALK IN", "WALKIN", "WALK-IN", "FOLLOWUP",
+    "ONLINE", "OFFLINE", "CALL", "CALLING", "CAMP", "OPD", "IPD", "EMERGENCY",
+    "CASH", "CARD", "UPI", "PAYMENT", "PAID", "UNPAID", "FREE", "DISCOUNT",
+    "MORNING", "EVENING", "NIGHT", "TODAY", "TOMORROW", "YESTERDAY",
+    "DONE SUGAR", "SUGAR", "BP", "DIABETES", "THYROID", "FEVER", "COLD", "COUGH"
+  ];
+  if (invalidEntries.includes(upperName)) return false;
+  
+  // Skip common person name patterns (titles followed by names)
+  const nameTitles = /^(MR\.?|MRS\.?|MS\.?|MISS|DR\.?|SHRI|SMT\.?|KUMARI?|MASTER)\s+/i;
+  if (nameTitles.test(cleanName)) return false;
+  
+  // Skip if it looks like a full person name (common Indian surnames)
+  const commonSurnames = [
+    "KUMAR", "SHARMA", "SINGH", "GUPTA", "VERMA", "YADAV", "CHAUHAN", "JAIN",
+    "AGARWAL", "AGGARWAL", "BANSAL", "GARG", "MALIK", "CHAUDHARY", "CHOWDHURY",
+    "PANDEY", "MISHRA", "DUBEY", "TIWARI", "SRIVASTAVA", "SAXENA", "KHANNA",
+    "KAPOOR", "ARORA", "BHATIA", "MEHTA", "SETHI", "KOHLI", "MALHOTRA", "CHOPRA",
+    "KAUR", "DEVI", "BEGUM", "BIBI", "KHATUN", "BANO", "PARVEEN", "ANJUM"
+  ];
+  // If it ends with a common surname and has a first name, it's likely a person
+  const words = upperName.split(/\s+/);
+  if (words.length >= 2) {
+    const lastName = words[words.length - 1];
+    if (commonSurnames.includes(lastName)) return false;
+  }
+  // Single word that is a common surname
+  if (words.length === 1 && commonSurnames.includes(upperName)) return false;
+  
+  // Skip common first names that might appear alone or in combinations
+  const commonFirstNames = [
+    // Male names
+    "RAHUL", "AMIT", "SUNIL", "ANIL", "VIJAY", "SANJAY", "RAJESH", "MUKESH",
+    "RAM", "SHYAM", "MOHAN", "ROHAN", "SOHAN", "RAVI", "SONU", "MONU", "PINTU",
+    "ARUN", "VARUN", "TARUN", "KARAN", "ARJUN", "NITIN", "SACHIN", "HITESH",
+    "RAKESH", "MAHESH", "SURESH", "RAMESH", "DINESH", "GANESH", "NARESH",
+    "AJAY", "VINAY", "SANJAY", "AKSHAY", "UDAY", "VIJAY", "JAY", "ABHAY",
+    "DEEPAK", "ASHOK", "ALOK", "VIVEK", "ANURAG", "GAURAV", "SOURAV", "PANKAJ",
+    "MANISH", "DANISH", "ASHISH", "SATISH", "RITESH", "JITESH", "PARESH",
+    "VISHAL", "KUSHAL", "SAGAR", "NEERAJ", "MANOJ", "ANUJ", "TANUJ",
+    "FAISAL", "SHAHZAD", "SHAHZED", "IMRAN", "IRFAN", "SALMAN", "AAMIR", "AMIR",
+    "FARHAN", "REHAN", "ZEESHAN", "SHAHNAWAZ", "SHUAIB", "SHOAIB", "WASIM", "ASIF",
+    "NADEEM", "NASEEM", "RASHID", "KHALID", "HAMID", "MAJID", "SAJID", "WAHID",
+    "MOHD", "MD", "SHEIKH", "SHAIKH",
+    "MOHAMMAD", "MOHAMMED", "KHAN", "AHMED", "ALI", "HUSSAIN", "AKBAR",
+    "RAHIS", "RAIS", "ADESH", "UMESH", "LOKESH", "YOGESH",
+    // Female names
+    "PRIYA", "NEHA", "POOJA", "ANJALI", "SUNITA", "GEETA", "REENA", "MEENA",
+    "NISHA", "ASHA", "USHA", "REKHA", "SUDHA", "RADHA", "SHOBHA", "PRABHA",
+    "ANITA", "KAVITA", "SAVITA", "LALITA", "MAMTA", "NAMITA", "BABITA", "SUJATA",
+    "SEEMA", "REEMA", "NEELAM", "POONAM", "SONAM", "SANAM", "ANAM",
+    "NARGIS", "GULAFSHA", "NAZMA", "SHABANA", "RUKHSAR", "SHANEY", "RUBINA",
+    "FATIMA", "AYESHA", "SADIA", "NADIA", "ZARA", "SANA", "HINA", "DIYA",
+    "PUSHPA", "CHAMPA", "KAMLA", "VIMLA", "SHANTI", "LAXMI", "DURGA",
+    "BHAWNA", "SAPNA", "SWAPNA", "ARCHANA", "VANDANA", "SADHANA", "RACHNA",
+    "RITU", "PINKY", "RINKU", "MINTU", "GUDDI", "MUNNI", "BITTU", "CHINTU"
+  ];
+  // Check if any word is a common first name
+  if (words.some(word => commonFirstNames.includes(word))) return false;
+  if (commonFirstNames.includes(upperName)) return false;
+  
+  // Skip doctor/hospital references that aren't places
+  if (/^DR\s|DOCTOR|HOSPITAL|CLINIC|NURSING|DISPENSARY|CHEMIST|PHARMACY/i.test(cleanName)) return false;
+  
+  // Skip relationship terms
+  const relationships = ["FATHER", "MOTHER", "BROTHER", "SISTER", "SON", "DAUGHTER", "WIFE", "HUSBAND", "UNCLE", "AUNT"];
+  if (relationships.includes(upperName)) return false;
+  
+  // Must contain at least one letter
+  if (!/[a-zA-Z]/.test(cleanName)) return false;
+  
+  // Good indicators that it's a place name
+  const placeIndicators = [
+    "NAGAR", "PURAM", "PURI", "VIHAR", "COLONY", "ENCLAVE", "EXTENSION", "EXT",
+    "SECTOR", "BLOCK", "PHASE", "PARK", "GARDEN", "BAGH", "GANJ", "MARKET",
+    "ROAD", "MARG", "STREET", "LANE", "GALI", "CHOWK", "CROSSING",
+    "VILLAGE", "GAON", "PUR", "ABAD", "GARH", "KOTHI", "MOHALLA",
+    "EAST", "WEST", "NORTH", "SOUTH", "CENTRAL",
+    "DELHI", "NOIDA", "GURGAON", "GURUGRAM", "FARIDABAD", "GHAZIABAD"
+  ];
+  
+  // If contains place indicators, it's likely valid
+  if (placeIndicators.some(indicator => upperName.includes(indicator))) return true;
+  
+  // Known Delhi/NCR area names that don't have standard suffixes
+  const knownAreas = [
+    "SHAHDARA", "SHAHDRA", "LAXMI", "GANDHI", "NEHRU", "TILAK",
+    "KAROL BAGH", "CHANDNI CHOWK", "CONNAUGHT", "KASHMERE GATE", "CIVIL LINES",
+    "ROHINI", "PITAMPURA", "SHALIMAR", "ASHOK", "PREET", "JANAKPURI", "DWARKA",
+    "SAKET", "VASANT", "HAUZ KHAS", "MALVIYA", "SAROJINI", "LAJPAT",
+    "OKHLA", "JASOLA", "KALINDI", "MAYUR", "PATPARGANJ", "ANAND",
+    "SHAKARPUR", "LAKSHMI", "GEETA", "KRISHNA", "YAMUNA", "WELCOME",
+    "SEEMAPURI", "DILSHAD", "JHILMIL", "VIVEK", "HARSH", "MANDOLI",
+    "BHAJANPURA", "MAUJPUR", "GOKULPURI", "MUSTAFABAD", "KARAWAL",
+    "BURARI", "MUKHERJEE", "NARELA", "BAWANA", "TIMARPUR", "KAMLA",
+    "USMANPUR", "USMAAN", "BRAHMPURI", "BHARAMPURI", "GHONDA", "KHODA",
+    "BHAGIRATHI", "KABUTAR", "TUKHMIRPUR", "KHAJOORI", "BABARPUR"
+  ];
+  
+  // Check if it matches known areas
+  if (knownAreas.some(area => upperName.includes(area))) return true;
+  
+  // Skip common action/status words that might slip through
+  const actionWords = [
+    "RESTART", "START", "STOP", "DONE", "COMPLETE", "PENDING", "WAITING",
+    "SUGAR", "BLOOD", "TEST", "REPORT", "RESULT", "CHECK", "FOLLOW",
+    "NOT DONE", "SUGAR NOT DONE", "BP NOT DONE", "NOT AVAILABLE"
+  ];
+  if (actionWords.some(word => upperName.includes(word))) return false;
+  
+  // For entries with numbers, only allow if they look like addresses (sector, block, phase, etc.)
+  if (/\d/.test(cleanName)) {
+    // Must have location keywords with numbers
+    if (/SECTOR|BLOCK|PHASE|POCKET|PLOT|FLAT|HOUSE|NO\.|NUMBER/i.test(cleanName)) return true;
+    // Otherwise reject - could be phone fragments, IDs, etc.
+    return false;
+  }
+  
+  // Two-word entries without place indicators are likely person names - reject
+  // (e.g., "rahis ahmad", "pushpa rani", "shaney zehra")
+  if (words.length === 2) {
+    // Only allow if one word is very short (like directional: E, W, N, S) or a number
+    if (words[0].length <= 2 || words[1].length <= 2) return true;
+    return false;
+  }
+  
+  // Three+ word entries might be addresses - be more lenient
+  if (words.length >= 3) return true;
+  
+  // Single words without place indicators - reject by default
+  // Too risky as they could be names, abbreviations, or random words
+  return false;
+}
+
 async function getCoordinatesFromGeocoding(areaName, branch) {
   if (!GEOCODING_API_KEY || GEOCODING_API_KEY === "") {
+    return null;
+  }
+
+  // Validate before making API call
+  if (!isValidPlaceForGeocoding(areaName)) {
+    console.log(`⊘ Skipped geocoding (not a valid place): "${areaName}"`);
     return null;
   }
 
@@ -378,6 +580,14 @@ async function getCoordinatesFromGeocoding(areaName, branch) {
     
     if (data.results && data.results.length > 0) {
       const location = data.results[0].geometry.location;
+      
+      // Validate that the result is within reasonable bounds for Delhi NCR region
+      // Delhi NCR approximate bounds: Lat 28.0-29.0, Lng 76.5-77.8
+      if (location.lat < 27.5 || location.lat > 29.5 || location.lng < 76.0 || location.lng > 78.5) {
+        console.log(`⊘ Skipped geocoding (outside Delhi NCR): "${areaName}" -> ${location.lat}, ${location.lng}`);
+        return null;
+      }
+      
       const coords = {
         lat: location.lat,
         lng: location.lng
@@ -495,15 +705,16 @@ function parseCSV(text) {
   return result;
 }
 
-async function loadBranchCSV(branch, year) {
+async function loadBranchCSV(branch, year, dataType) {
   try {
-    const gid = sheetGIDs[year]?.[branch];
+    const gid = sheetGIDs[dataType]?.[year]?.[branch];
     if (!gid) {
-      console.error(`Missing GID for ${branch} ${year}`);
+      console.error(`Missing GID for ${dataType} ${branch} ${year}`);
       return {};
     }
 
-    const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/export?format=csv&gid=${gid}`;
+    const spreadsheetId = SPREADSHEET_IDS[dataType];
+    const url = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/export?format=csv&gid=${gid}`;
     const response = await fetch(url);
     
     if (!response.ok) {
@@ -649,12 +860,13 @@ function updateBranchMarkers(selectedId) {
 
 async function generateHeatmap() {
   const branch = document.getElementById("branch").value;
+  const dataType = document.getElementById("dataType").value;
   const start = Number(document.getElementById("startMonth").value);
   const end = Number(document.getElementById("endMonth").value);
   const year = document.getElementById("year").value;
 
   try {
-    const sheet = await loadBranchCSV(branch, year);
+    const sheet = await loadBranchCSV(branch, year, dataType);
     const lookup = buildLookup(coordinates[branch]);
     
     const monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
@@ -705,9 +917,10 @@ async function generateHeatmap() {
     const branchInfo = branchMarkers.find(b => b.id === branch);
     const startLabel = document.getElementById("startMonth").selectedOptions[0].text;
     const endLabel = document.getElementById("endMonth").selectedOptions[0].text;
+    const dataTypeLabel = document.getElementById("dataType").selectedOptions[0].text;
 
     document.getElementById("selection-info").textContent =
-      `${branchInfo.branchName} — ${startLabel} to ${endLabel} ${year}`;
+      `${branchInfo.branchName} — ${dataTypeLabel} — ${startLabel} to ${endLabel} ${year}`;
 
     if (heatLayer) map.removeLayer(heatLayer);
     
@@ -778,7 +991,7 @@ async function generateHeatmap() {
     }
 
     document.getElementById("patient-count").textContent = totalPatients;
-    console.log(`✓ ${branch} ${year}: ${totalPatients} patients`);
+    console.log(`✓ ${branch} ${year} (${dataType}): ${totalPatients} records`);
 
     updateBranchMarkers(branch);
 
