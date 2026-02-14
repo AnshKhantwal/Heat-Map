@@ -639,10 +639,18 @@ function parseCSV(text) {
     "OCTOBER": "OCT", "NOVEMBER": "NOV", "DECEMBER": "DEC"
   };
   
+  // Build a mapping from column index to month key (skip empty headers)
+  const colToMonth = {};
   const result = {};
-  header.forEach(h => {
-    const monthKey = monthMap[h] || h;
-    result[monthKey] = [];
+  
+  header.forEach((h, idx) => {
+    if (h && monthMap[h]) {
+      const monthKey = monthMap[h];
+      colToMonth[idx] = monthKey;
+      if (!result[monthKey]) {
+        result[monthKey] = [];
+      }
+    }
   });
 
   // Function to validate if a string is a valid area name
@@ -694,9 +702,10 @@ function parseCSV(text) {
     const cols = row.split(",").map(c => c.trim());
     cols.forEach((areaName, colIdx) => {
       if (areaName && isValidAreaName(areaName)) {
-        const monthKeys = Object.keys(result);
-        if (colIdx < monthKeys.length) {
-          result[monthKeys[colIdx]].push(areaName);
+        // Use direct column-to-month mapping
+        const monthKey = colToMonth[colIdx];
+        if (monthKey) {
+          result[monthKey].push(areaName);
         }
       }
     });
