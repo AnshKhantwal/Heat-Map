@@ -890,12 +890,14 @@ function initMap() {
   legend.onAdd = function () {
     const div = L.DomUtil.create("div", "legend");
     div.innerHTML = `
-      <div class="legend-title">Patient Density</div>
-      <div class="legend-item"><div class="legend-color" style="background:#1a9850"></div> Low</div>
-      <div class="legend-item"><div class="legend-color" style="background:#66bd63"></div> Medium</div>
-      <div class="legend-item"><div class="legend-color" style="background:#fee08b"></div> High</div>
-      <div class="legend-item"><div class="legend-color" style="background:#fc8d59"></div> Very High</div>
-      <div class="legend-item"><div class="legend-color" style="background:#d73027"></div> Critical</div>
+      <div class="legend-title">Frequency Count</div>
+      <div class="legend-item"><div class="legend-color" style="background:#1a9850"></div> 1-5</div>
+      <div class="legend-item"><div class="legend-color" style="background:#66bd63"></div> 6-10</div>
+      <div class="legend-item"><div class="legend-color" style="background:#b8e186"></div> 11-15</div>
+      <div class="legend-item"><div class="legend-color" style="background:#fee08b"></div> 16-20</div>
+      <div class="legend-item"><div class="legend-color" style="background:#fc8d59"></div> 21-25</div>
+      <div class="legend-item"><div class="legend-color" style="background:#e34a33"></div> 26-30</div>
+      <div class="legend-item"><div class="legend-color" style="background:#d73027"></div> 31+</div>
     `;
     return div;
   };
