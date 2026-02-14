@@ -491,7 +491,7 @@ function isValidPlaceForGeocoding(name) {
   
   // Skip common invalid/placeholder entries
   const invalidEntries = [
-    "OTHER", "OTHERS", "WOM", "SELF", "DONE", "NONE", "NIL", "NULL", "NA", "N/A",
+    "OTHER", "OTHERS", "WOM", "W O M", "SELF", "DONE", "NONE", "NIL", "NULL", "NA", "N/A",
     "TEST", "DEMO", "SAMPLE", "UNKNOWN", "NOT AVAILABLE", "NOT KNOWN", "PENDING",
     "YES", "NO", "OK", "OKAY", "FINE", "GOOD", "BAD", "NEW", "OLD",
     "TEAM GOOGLE", "GOOGLE", "FACEBOOK", "INSTAGRAM", "WHATSAPP", "JUSTDIAL", "PRACTO",
@@ -730,7 +730,7 @@ function parseCSV(text) {
     
     // List of invalid entries to skip
     const invalidEntries = [
-      "OTHER", "WOM", "SELF", "DONE", "DONE SUGAR", "TEAM GOOGLE", 
+      "OTHER", "WOM", "W O M", "SELF", "DONE", "DONE SUGAR", "TEAM GOOGLE", 
       "#VALUE!", "#REF!", "#N/A", "#ERROR!", "#DIV/0!", "#NAME?",
       "NA", "N/A", "NIL", "NONE", "NULL", "-", "--", "---",
       "TEST", "DEMO", "SAMPLE", "UNKNOWN", "NOT AVAILABLE"
