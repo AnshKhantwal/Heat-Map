@@ -171,6 +171,68 @@
             font-weight: 700;
             color: #ffeaa7;
         }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(30, 30, 50, 0.85);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #ffffff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .map-container {
+            position: relative;
+        }
+
+        .frequency-tooltip {
+            background: rgba(30, 30, 50, 0.9) !important;
+            border: none !important;
+            border-radius: 8px !important;
+            padding: 8px 12px !important;
+            color: #ffffff !important;
+            font-size: 13px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .frequency-tooltip::before {
+            border-top-color: rgba(30, 30, 50, 0.9) !important;
+        }
     </style>
 </head>
 
@@ -252,13 +314,19 @@
         </div>
     </div>
 
-    <div id="map"></div>
+    <div class="map-container">
+        <div id="map"></div>
+        <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">Loading data...</div>
+        </div>
+    </div>
 
     <div class="info-panel">
         <strong>Selected:</strong>
         <span id="selection-info">Shahdra - January 2025</span>
         <br>
-        <strong>Total Patients:</strong> <span id="patient-count">0</span>
+        <strong>Total <span id="data-type-label">Patients</span>:</strong> <span id="patient-count">0</span>
     </div>
 </div>
 
@@ -358,6 +426,7 @@ let coordinates = {};
 let generatedCoordinates = { shahdra: {}, keshavpuram: {}, mayurvihar: {}, tigri: {}, uttamnagar: {} };
 let map, heatLayer;
 let branchLeafletMarkers = [];
+let heatMarkers = []; // Markers for hover tooltips
 let zoomHandler = null; // Track zoom event handler
 
 /* ================================
@@ -867,12 +936,22 @@ function updateBranchMarkers(selectedId) {
    MAIN HEATMAP GENERATOR
 ================================ */
 
+function showLoading() {
+  document.getElementById("loading-overlay").classList.add("active");
+}
+
+function hideLoading() {
+  document.getElementById("loading-overlay").classList.remove("active");
+}
+
 async function generateHeatmap() {
   const branch = document.getElementById("branch").value;
   const dataType = document.getElementById("dataType").value;
   const start = Number(document.getElementById("startMonth").value);
   const end = Number(document.getElementById("endMonth").value);
   const year = document.getElementById("year").value;
+
+  showLoading();
 
   try {
     const sheet = await loadBranchCSV(branch, year, dataType);
@@ -881,7 +960,12 @@ async function generateHeatmap() {
     const monthNames = ["JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"];
     const heatPoints = [];
     const locationCount = {}; // Track frequency per location
+    const locationNames = {}; // Track area names for tooltips
     let totalPatients = 0;
+
+    // Clear previous hover markers
+    heatMarkers.forEach(m => map.removeLayer(m));
+    heatMarkers = [];
 
     for (let m = start; m <= end; m++) {
       const month = monthNames[m - 1];
@@ -909,6 +993,9 @@ async function generateHeatmap() {
           // Track frequency per location for intensity
           const locKey = `${entry.lat.toFixed(5)},${entry.lng.toFixed(5)}`;
           locationCount[locKey] = (locationCount[locKey] || 0) + 1;
+          if (!locationNames[locKey]) {
+            locationNames[locKey] = area;
+          }
           totalPatients++;
         }
       }
@@ -942,18 +1029,18 @@ async function generateHeatmap() {
     if (heatPoints.length > 0) {
       // Dynamic radius based on zoom level for precision
       const getRadiusForZoom = (zoom) => {
-        if (zoom >= 16) return 15;
-        if (zoom >= 14) return 20;
-        if (zoom >= 12) return 25;
-        if (zoom >= 10) return 30;
-        return 35;
+        if (zoom >= 16) return 20;
+        if (zoom >= 14) return 28;
+        if (zoom >= 12) return 35;
+        if (zoom >= 10) return 45;
+        return 55;
       };
 
       const getBlurForZoom = (zoom) => {
-        if (zoom >= 16) return 10;
-        if (zoom >= 14) return 12;
-        if (zoom >= 12) return 15;
-        return 18;
+        if (zoom >= 16) return 8;
+        if (zoom >= 14) return 10;
+        if (zoom >= 12) return 12;
+        return 15;
       };
 
       const currentZoom = map.getZoom();
@@ -963,7 +1050,7 @@ async function generateHeatmap() {
         blur: getBlurForZoom(currentZoom),
         maxZoom: 17,
         max: 1.0,
-        minOpacity: 0.4,
+        minOpacity: 0.6,
         gradient: {
           0.0: "#1a9850",
           0.25: "#66bd63",
@@ -973,13 +1060,40 @@ async function generateHeatmap() {
         }
       }).addTo(map);
 
+      // Add hover markers to show frequency
+      for (const [locKey, count] of Object.entries(locationCount)) {
+        const [lat, lng] = locKey.split(",").map(Number);
+        const areaName = locationNames[locKey] || "Unknown Area";
+        // Use larger radius that matches heatmap radius for easier hovering
+        const markerRadius = getRadiusForZoom(currentZoom);
+        const circleMarker = L.circleMarker([lat, lng], {
+          radius: markerRadius,
+          fillColor: "transparent",
+          color: "transparent",
+          weight: 0,
+          fillOpacity: 0
+        });
+        circleMarker.bindTooltip(`<strong>${areaName}</strong><br>Patients: ${count}`, {
+          permanent: false,
+          direction: "top",
+          className: "frequency-tooltip"
+        });
+        heatMarkers.push(circleMarker);
+        circleMarker.addTo(map);
+      }
+
       // Update heatmap radius/blur on zoom change for precision
       zoomHandler = function() {
         if (heatLayer) {
           const zoom = map.getZoom();
+          const newRadius = getRadiusForZoom(zoom);
           heatLayer.setOptions({
-            radius: getRadiusForZoom(zoom),
+            radius: newRadius,
             blur: getBlurForZoom(zoom)
+          });
+          // Update hover marker sizes too
+          heatMarkers.forEach(marker => {
+            marker.setRadius(newRadius);
           });
         }
       };
@@ -1000,12 +1114,15 @@ async function generateHeatmap() {
     }
 
     document.getElementById("patient-count").textContent = totalPatients;
+    document.getElementById("data-type-label").textContent = dataType === "doctors" ? "Doctors" : "Patients";
     console.log(`✓ ${branch} ${year} (${dataType}): ${totalPatients} records`);
 
     updateBranchMarkers(branch);
 
   } catch (err) {
     console.error("Error:", err);
+  } finally {
+    hideLoading();
   }
 }
 
